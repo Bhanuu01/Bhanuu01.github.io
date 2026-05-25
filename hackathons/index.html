@@ -62,8 +62,8 @@
         <p class="eyebrow">Experiments under time pressure</p>
         <h1 class="page-title">Fast builds and competition work.</h1>
         <p class="page-summary">
-          I keep this page because some later project ideas started here. These entries are best read as fast builds
-          and experiments, not as work that carries the same weight as the flagship case studies.
+          These were shorter builds done in hackathons, competitions, and class settings. Some of them stayed as
+          experiments, and some later grew into bigger projects.
         </p>
       </section>
 
@@ -71,16 +71,47 @@
         <article class="entry-card">
           <div class="entry-topline">
             <div>
+              <div class="entry-kicker">AI for chip design</div>
+              <h2 class="entry-title">CogniChip Hackathon</h2>
+            </div>
+            <div class="entry-date">NYU x CogniChip · 2026</div>
+          </div>
+          <p>
+            Built an AI-driven layout-aware RTL optimization workflow during the NYU and CogniChip hackathon,
+            which focused on practical RTL design, verification, and evaluation in a short team-based format.
+          </p>
+          <p>
+            The workflow tied together simulation, synthesis, timing analysis, and LLM-guided patch suggestions
+            using Verilator, Yosys, and OpenSTA. What made it interesting was not just the tooling itself, but the
+            attempt to shorten the loop between seeing a hardware issue and deciding what to change next.
+          </p>
+          <div class="entry-callout">A week-long industry hackathon build around AI-assisted RTL design rather than a standalone long-form project.</div>
+          <div class="tags">
+            <span class="tag">Verilator</span><span class="tag">Yosys</span><span class="tag">OpenSTA</span><span class="tag">LLM tooling</span>
+          </div>
+          <div class="button-row">
+            <a class="button-secondary" href="/projects/rtl-optimization-loop/">Hackathon write-up</a>
+          </div>
+        </article>
+
+        <article class="entry-card">
+          <div class="entry-topline">
+            <div>
               <div class="entry-kicker">Climate + forecasting</div>
               <h2 class="entry-title">FloodIQ</h2>
             </div>
-            <div class="entry-date">Spark Hack Series NY · 2025</div>
+            <div class="entry-date">Spark Hack Series NY · 2026</div>
           </div>
           <p>
             Built a forecast-driven flood risk system for New York City using NVIDIA PhysicsNeMo, FNO-based weather
             modeling, RAPIDS cuDF for geospatial processing, and NYC Open Data feeds.
           </p>
-          <p class="meta-line">Competition entry; included here as a fast-build experiment rather than as a longer-term project.</p>
+          <p>
+            The project was an attempt to turn weather and geospatial inputs into a usable city-level risk workflow
+            quickly enough for a hackathon setting. It was less about polishing a product and more about proving that
+            the modeling, data processing, and mapping pieces could work together under time pressure.
+          </p>
+          <div class="entry-callout">A climate and geospatial hackathon prototype focused on integration and fast iteration.</div>
           <div class="tags">
             <span class="tag">PhysicsNeMo</span><span class="tag">FNO</span><span class="tag">RAPIDS cuDF</span><span class="tag">Geospatial</span>
           </div>
@@ -92,13 +123,22 @@
               <div class="entry-kicker">Fashion AI</div>
               <h2 class="entry-title">Mirror</h2>
             </div>
-            <div class="entry-date">GDG NYC Hackathon · 2025</div>
+            <div class="entry-date">Google Developer Groups New York City Hackathon · 2026</div>
           </div>
           <p>
-            Built a Chrome extension using Gemini to identify clothing items and surface similar products. This later
-            evolved into the more complete StyleSync recommendation project.
+            Built a Chrome extension using Gemini to identify clothing items and surface similar products from the
+            browsing context. The initial goal was simple: make outfit discovery feel immediate instead of turning it
+            into a manual search problem.
           </p>
-          <div class="entry-callout">This is the clearest example on the site of a fast build becoming a longer-form system.</div>
+          <p>
+            This was one of the few fast builds that clearly had more room to grow. The retrieval and recommendation
+            idea held up well enough that I later extended it into StyleSync, which became a more complete system with
+            serving, indexing, and retrieval infrastructure.
+          </p>
+          <div class="entry-callout">The clearest example on the site of a hackathon idea turning into a larger project.</div>
+          <div class="tags">
+            <span class="tag">Gemini</span><span class="tag">Chrome extension</span><span class="tag">Vision</span><span class="tag">Recommendation</span>
+          </div>
           <div class="button-row">
             <a class="button-secondary" href="/projects/stylesync/">See the extended project</a>
           </div>
@@ -113,10 +153,18 @@
             <div class="entry-date">NYU HPML · 2025</div>
           </div>
           <p>
-            Ran PyTorch DDP benchmarks and quantization experiments on L4 GPUs, then wrote up the engineering tradeoffs
-            in a report with plots, screenshots, and observations from the experiments.
+            Ran PyTorch DDP benchmarks and quantization experiments on L4 GPUs, then wrote up the tradeoffs in a report
+            with plots, screenshots, and observations from the runs.
           </p>
-          <p class="meta-line">This was course-based performance work, included here because it shaped later CUDA and systems interests.</p>
+          <p>
+            This was course-based work rather than a public competition, but it belongs on this page for the same
+            reason as the hackathons: it was a short, focused build that sharpened how I think about performance,
+            scaling, and hardware-aware experimentation.
+          </p>
+          <div class="entry-callout">A short experimental sprint that fed directly into my later CUDA and systems work.</div>
+          <div class="tags">
+            <span class="tag">PyTorch DDP</span><span class="tag">Quantization</span><span class="tag">L4 GPUs</span><span class="tag">Profiling</span>
+          </div>
         </article>
       </section>
     </main>

@@ -78,40 +78,29 @@
           </header>
 
           <p>
-            Average latency often hides the user experience that actually gets shipped. Tail latency is what shows up
-            when a system is stressed, and in many backend systems the real problem is not one slow line of code but
-            a design that forces the request path to own too much synchronous work.
+            The most useful thing I learned from backend performance work at SalesUp was that tail latency is usually
+            an architecture problem before it is a code problem. We had API flows doing too much work inline, and the
+            result was that slow operations were directly competing with traffic that needed quick responses.
           </p>
 
-          <h2>Where the pain was coming from</h2>
+          <h2>Where the delay came from</h2>
           <p>
-            At SalesUp, some API flows were handling work inline that did not need to happen before the response
-            returned. That design made request paths heavier than they needed to be and caused slow operations to
-            compete directly with interactive traffic.
+            Some of the request paths were trying to finish work that did not actually belong in the response cycle.
+            That made the APIs heavier than they needed to be and pushed long-running operations into the same path as
+            user-facing traffic.
           </p>
 
-          <h2>What changed</h2>
+          <h2>What we changed</h2>
           <p>
-            The most important shift was architectural, not syntactic. The API moved closer to a coordinator model:
-            validate the request, persist the right state, queue the background work, and return a stable contract
-            quickly instead of trying to finish everything synchronously.
-          </p>
-
-          <blockquote>
-            The point of async work is not that it sounds modern. The point is that some responsibilities should not
-            live on the request path at all.
-          </blockquote>
-
-          <p>
-            That redesign improved system throughput and reduced P99 latency because long-running operations stopped
-            competing directly with the traffic that needed fast responses. It also created cleaner retry boundaries
-            and made failure handling easier to reason about.
+            The main shift was to treat the API as a coordinator. Validate the request, persist the right state, queue
+            the background work, and return a stable response instead of trying to finish everything synchronously.
+            That reduced contention on the request path and made retries and failure handling cleaner too.
           </p>
 
           <h2>What stayed with me</h2>
           <p>
-            The most useful lesson was that latency tuning is often a question of systems boundaries, not just local
-            optimization.
+            I still think about this project whenever latency discussions get too local. Sometimes the fix is faster
+            code. Just as often, the real question is whether the system boundary is in the wrong place.
           </p>
         </article>
 

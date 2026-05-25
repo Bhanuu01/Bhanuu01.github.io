@@ -84,13 +84,12 @@
           </header>
 
           <p>
-            Dysarthric speech classification sounds straightforward when it is described at a high level: take speech,
-            extract features, train a model, predict severity. In practice, the hard part is usually the data. The
-            speech is variable, labels are limited, and augmentation choices can help or hurt depending on how closely
-            they respect the structure of the original signal.
+            Dysarthric speech classification sounds straightforward at first. In practice, the difficult part is
+            usually the data. The speech is variable, the labels are limited, and augmentation choices can help or
+            hurt depending on how well they preserve the structure of the original signal.
           </p>
 
-          <h2>Why the task is difficult</h2>
+          <h2>Why this is hard</h2>
           <p>
             Dysarthria affects articulation in ways that are clinically meaningful but not always easy to separate with
             small datasets. A classifier can overfit to speaker-specific quirks or recording conditions long before it
@@ -104,11 +103,11 @@
             look richer while quietly distorting the very patterns the model needs to learn.
           </p>
 
-          <h2>What stayed with me from the work</h2>
+          <h2>What stayed with me</h2>
           <p>
-            The most useful lesson from this line of research is that good results in speech often come from respecting
-            the data first. Model choice matters, but not as much as understanding what the data can honestly support.
-            That instinct has stayed with me even as my work has moved further into systems and infrastructure.
+            What stayed with me from this work is that good results in speech usually start with respecting what the
+            data can honestly support. Model choice matters, but not as much as understanding the structure and limits
+            of the data you have.
           </p>
         </article>
 

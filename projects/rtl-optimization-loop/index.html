@@ -3,38 +3,38 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RTL Optimization Loop | Bhanuja Karumuru</title>
+    <title>CogniChip Hackathon RTL Workflow | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="Case study on an AI-assisted RTL optimization and verification loop using Verilator, Yosys, OpenSTA, and automated patch generation."
+      content="Hackathon write-up on an AI-assisted RTL optimization and verification workflow built during the NYU x CogniChip hackathon."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://bhanuu01.github.io/projects/rtl-optimization-loop/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="RTL Optimization Loop | Bhanuja Karumuru" />
-    <meta property="og:description" content="EDA automation case study with verification, timing analysis, and iterative LLM-assisted patching." />
+    <meta property="og:title" content="CogniChip Hackathon RTL Workflow | Bhanuja Karumuru" />
+    <meta property="og:description" content="Hackathon write-up covering verification, timing analysis, and iterative LLM-assisted RTL tooling." />
     <meta property="og:url" content="https://bhanuu01.github.io/projects/rtl-optimization-loop/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="RTL Optimization Loop | Bhanuja Karumuru" />
-    <meta name="twitter:description" content="EDA automation case study with verification, timing analysis, and iterative LLM-assisted patching." />
+    <meta name="twitter:title" content="CogniChip Hackathon RTL Workflow | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="Hackathon write-up covering verification, timing analysis, and iterative LLM-assisted RTL tooling." />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "SoftwareSourceCode",
-        "name": "RTL Optimization Loop",
-        "description": "An AI-assisted RTL optimization and verification loop using Verilator, Yosys, OpenSTA, and automated patch generation.",
+        "name": "CogniChip Hackathon RTL Workflow",
+        "description": "An AI-assisted RTL optimization and verification workflow built during the NYU x CogniChip hackathon.",
         "author": {
           "@type": "Person",
           "name": "Bhanuja Karumuru"
         },
         "url": "https://bhanuu01.github.io/projects/rtl-optimization-loop/",
         "programmingLanguage": ["Python"],
-        "applicationCategory": "EDA tooling"
+        "applicationCategory": "Hackathon EDA tooling"
       }
     </script>
   </head>
@@ -51,8 +51,8 @@
           <ul class="nav-links">
             <li><a href="/about/">About</a></li>
             <li><a href="/experience/">Experience</a></li>
-            <li><a href="/projects/" aria-current="page">Projects</a></li>
-            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/" aria-current="page">Hackathons</a></li>
             <li><a href="/publications/">Publications</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/cv/">CV</a></li>
@@ -64,50 +64,49 @@
     </header>
 
     <main class="site-shell">
-      <a class="back-link" href="/projects/">← Back to projects</a>
+      <a class="back-link" href="/hackathons/">← Back to hackathons</a>
       <div class="article-wrap">
         <article class="article">
           <header class="article-header">
-            <p class="eyebrow">EDA / automation</p>
-            <h1>RTL Optimization Loop</h1>
-            <p class="hero-summary">An AI-assisted workflow for synthesis, timing analysis, and iterative RTL patch review.</p>
+            <p class="eyebrow">CogniChip hackathon</p>
+            <h1>AI-Driven Layout-Aware RTL Optimization Workflow</h1>
+            <p class="hero-summary">A hackathon workflow for RTL simulation, synthesis, timing analysis, and iterative patch review.</p>
             <p class="article-meta">Verilator · Yosys · OpenSTA · Python · LLM-assisted tooling</p>
           </header>
 
           <p>
-            This project started from a familiar frustration in digital-design work: the time cost of repeatedly
-            running simulation, synthesis, and timing checks just to get back to the next debugging decision.
-            Instead of treating those tools as disconnected steps, I wanted a tighter loop that could surface
-            failures, summarize them, and support the next edit more quickly.
+            This work came out of the NYU and CogniChip hackathon in February 2026, which focused on AI-assisted
+            chip design and practical RTL workflows. Our team explored how to make the iteration loop around RTL
+            design less manual by connecting simulation, synthesis, timing analysis, and patch suggestions in one
+            tighter workflow.
           </p>
 
-          <h2>Problem</h2>
+          <h2>Hackathon context</h2>
           <p>
-            RTL development often involves a repetitive sequence: run simulation, inspect failures, resynthesize,
-            check timing, adjust the code, and repeat. The cost is not only wall-clock time but also context-switching.
-            When the loop is noisy, it is harder to focus on the actual hardware reasoning.
+            The hackathon was organized with CogniChip as an industry collaboration around AI-first semiconductor
+            design. Teams were asked to work at the RTL level, use modern EDA workflows, and submit simulation
+            results, a presentation, a demo video, and a repository link as part of the final evaluation.
           </p>
 
-          <h2>What I built</h2>
+          <h2>What we built</h2>
           <p>
-            I built a workflow that runs Verilator, Yosys, and OpenSTA in sequence, collects the relevant outputs,
-            and uses an LLM-guided patching step to propose the next edit candidates. The point was not to create
-            push-button hardware design. It was to reduce the amount of repeated setup work around each iteration.
+            We built a workflow that runs Verilator, Yosys, and OpenSTA in sequence, collects the relevant outputs,
+            and uses an LLM-guided patching step to propose the next edit candidates. The goal was not to replace
+            hardware reasoning. It was to reduce repeated setup work and make each design iteration easier to inspect.
           </p>
 
-          <h2>How the loop works</h2>
+          <h2>How the loop worked</h2>
           <p>
-            Each pass runs linting and simulation, then synthesis and timing analysis, and finally packages the
-            most useful feedback into a form that is easier to review. That structure made the workflow useful even
-            without a dramatic benchmark number, because it clarified where the next engineering decision should come
-            from.
+            Each pass ran linting and simulation, then synthesis and timing analysis, and finally packaged the most
+            useful feedback into a form that was easier to review. That structure mattered more than a single benchmark
+            number because it made the next engineering decision clearer during a short hackathon window.
           </p>
 
-          <h2>Why it matters</h2>
+          <h2>Why I kept it on the site</h2>
           <p>
-            I included this project because it reflects another side of my interests: tooling and developer loops.
-            The same instinct shows up in my backend and ML systems work too. I care about shortening the path between
-            “something failed” and “here is the next change worth making.”
+            I keep this write-up because it reflects one part of my systems interests that does not show up in the
+            rest of the portfolio as often: developer tooling around hardware workflows. Even though it was a hackathon
+            build, it connects naturally to the same instinct behind my backend and ML systems work.
           </p>
         </article>
 
@@ -123,8 +122,8 @@
           </section>
 
           <section class="article-panel">
-            <h3>Project note</h3>
-            <p>This is an experimental workflow write-up rather than a polished public repository.</p>
+            <h3>Hackathon note</h3>
+            <p>This page is a write-up from a team hackathon project rather than a longer-form standalone project.</p>
           </section>
         </aside>
       </div>

@@ -78,9 +78,9 @@
           </header>
 
           <p>
-            The Datanauts project became useful to me when it stopped being just a model and started becoming a
-            workflow. The modeling problem mattered, but the stronger engineering question was what happens when an
-            output has to be reviewable, reproducible, and shaped for downstream use.
+            The Datanauts project became more interesting once it stopped being only a model and started becoming a
+            workflow. The engineering question shifted from model quality alone to something more practical: how do
+            you make the output reviewable, reproducible, and usable downstream?
           </p>
 
           <h2>Why the system needed stages</h2>
@@ -90,14 +90,14 @@
             boundary reduced noise and made the full pipeline easier to reason about.
           </p>
 
-          <h2>What made it feel more real</h2>
+          <h2>What made it usable</h2>
           <p>
             MLflow tracking, artifact management, confidence thresholds, and review paths mattered as much as the
             model choice. Once a system is expected to support a real workflow, the surrounding structure determines
             whether the output is actually usable.
           </p>
 
-          <h2>What I would add next</h2>
+          <h2>What I would improve next</h2>
           <p>
             The main missing piece is stronger monitoring for drift. The offline metrics were good, but production
             confidence should not depend only on those metrics. A better version would make distribution change more

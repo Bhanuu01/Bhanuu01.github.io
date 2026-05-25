@@ -6,7 +6,7 @@
     <title>About | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="About Bhanuja Karumuru, also searchable as Bhanu Karumuru, B. Karumuru, and BK3170: NYU Computer Engineering graduate student working across ML systems, backend engineering, and research."
+      content="A personal background page on Bhanuja Karumuru's path from NIT Sikkim to SalesUp to NYU, covering research, systems work, and what she is building toward."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta
@@ -20,7 +20,7 @@
     <meta property="og:title" content="About | Bhanuja Karumuru" />
     <meta
       property="og:description"
-      content="A short introduction to Bhanuja Karumuru's work across ML systems, backend engineering, and research."
+      content="A personal background page on Bhanuja Karumuru's path from NIT Sikkim to SalesUp to NYU."
     />
     <meta property="og:url" content="https://bhanuu01.github.io/about/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
@@ -28,7 +28,7 @@
     <meta name="twitter:title" content="About | Bhanuja Karumuru" />
     <meta
       name="twitter:description"
-      content="A short introduction to Bhanuja Karumuru's work across ML systems, backend engineering, and research."
+      content="A personal background page on Bhanuja Karumuru's path from NIT Sikkim to SalesUp to NYU."
     />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
@@ -83,75 +83,72 @@
 
     <main class="site-shell">
       <section class="section-block">
-        <p class="eyebrow">About</p>
+        <p class="eyebrow">Profile</p>
         <h1 class="page-title">About Bhanuja Karumuru</h1>
         <p class="page-summary">
-          I am an M.S. Computer Engineering student at NYU Tandon, with a background in electronics and signal
-          processing from NIT Sikkim and professional backend engineering experience from SalesUp.
+          A little more context on where I started, what shaped the work I care about now, and what I am building toward.
         </p>
-        <p class="meta-line">Also searchable as Bhanu Karumuru, B. Karumuru, and BK3170.</p>
       </section>
 
       <section class="page-grid">
-        <div class="page-content">
-          <div class="entry-list">
-            <article class="entry-card">
-              <div class="entry-topline">
-                <div>
-                  <div class="entry-kicker">Where I started</div>
-                  <h2 class="entry-title">NIT Sikkim gave me my first serious technical foundation</h2>
-                </div>
-              </div>
-              <p>
-                I studied electronics and communication engineering at NIT Sikkim, where a lot of my early work was
-                in signal processing, communication systems, and applied machine learning. Coming from a smaller institute
-                taught me to be resourceful and to learn by building, not just by following a predefined path.
-              </p>
-            </article>
+        <article class="article">
+          <h2>How I got here</h2>
+          <p>
+            NIT Sikkim is a newer institution in the northeast of India. There was no large alumni network and no
+            established research pipeline around me. I spent the first two years figuring out what I actually wanted
+            to build. In my third year I found it in a professor who was working at the intersection of machine
+            learning and speech processing and was genuinely open to taking on an undergraduate who wanted to do real
+            research.
+          </p>
+          <p>
+            The problem we worked on was dysarthric speech severity classification. It was a low-resource problem with
+            limited data and not much prior work from an electronics and communication angle, which is part of what
+            made it interesting. I spent a year on it, mostly just me and the professor, and it eventually led to an
+            IEEE SPCOM 2024 paper and a journal acceptance in 2026. I was the only person from my batch who stayed
+            with a full year of research and got it published. That year taught me more about hard problems
+            than anything else in my undergraduate degree.
+          </p>
+          <p>
+            When I graduated, I had an MNC offer for a Technical Consultant role. I turned it down for an SDE
+            internship at SalesUp, a growing startup. That choice mattered. At SalesUp I was closer to the real
+            decisions: conversations with founders and clients, understanding what the business actually needed before
+            writing code, and building with real budget constraints and no safety net. Working across business, sales,
+            and tech at the same time gave me a clearer picture of what software is actually for than a structured
+            rotation would have.
+          </p>
+          <p>
+            For my master's degree, I wanted to go deeper on the hardware-software boundary, the layer where a
+            performance problem stops being only a code question and starts becoming an architecture and systems
+            question. NYU Tandon pointed in that direction.
+          </p>
 
-            <article class="entry-card">
-              <div class="entry-topline">
-                <div>
-                  <div class="entry-kicker">Industry</div>
-                  <h2 class="entry-title">SalesUp is where I learned what production work actually feels like</h2>
-                </div>
-              </div>
-              <p>
-                At SalesUp I worked on backend APIs, async pipelines, and LLM-backed product features. The most useful
-                lesson from that year was learning how much better a system gets when responsibilities move off the
-                request path and into a cleaner background workflow.
-              </p>
-            </article>
+          <h2>What I work on</h2>
+          <p>
+            My projects tend to live at that same boundary. I wrote a CUDA kernel for transformer inference because I
+            wanted to understand what the profiler was actually telling me about memory movement, not just run
+            benchmarks and report numbers. At SalesUp, the P99 latency problem turned out to be an architecture
+            question disguised as a code one. The dysarthria research started from wanting to understand how speech
+            breaks down at the motor level, not just model the acoustics.
+          </p>
+          <p>
+            The pattern across all of it is the same. I want to understand what the system is actually doing, not just
+            what it looks like from the outside.
+          </p>
 
-            <article class="entry-card">
-              <div class="entry-topline">
-                <div>
-                  <div class="entry-kicker">Why NYU</div>
-                  <h2 class="entry-title">I came to NYU to go deeper on systems work</h2>
-                </div>
-              </div>
-              <p>
-                NYU gave me room to move closer to the kinds of problems I want to keep working on: CUDA performance,
-                ML systems, robotics perception, and secure systems. I am building toward roles where I can work on
-                infrastructure and engineering problems that stay meaningful after the first demo.
-              </p>
-            </article>
+          <h2>What I'm working toward</h2>
+          <p>
+            I am joining Amazon this summer as an SDE intern. The longer direction is systems software at the
+            hardware-software boundary, the kind of work where the software has to understand what the
+            hardware underneath it is doing. Memory hierarchy, kernel-level execution, and the gap between what the
+            architecture promises and what the profiler shows are the parts that keep pulling me in.
+          </p>
 
-            <article class="entry-card">
-              <div class="entry-topline">
-                <div>
-                  <div class="entry-kicker">A more personal note</div>
-                  <h2 class="entry-title">I naturally turn technical work into explanations</h2>
-                </div>
-              </div>
-              <p>
-                One pattern that keeps showing up in my work is that I like making complicated things easier to follow,
-                whether that means writing clearer feedback for students, turning a rough project into a readable case
-                study, or building systems with output that someone else can actually use.
-              </p>
-            </article>
-          </div>
-        </div>
+          <h2>Outside all of this</h2>
+          <p>
+            I spend time with close friends, trying new restaurants, cooking, playing badminton badly, and just
+            talking. Nothing structured. That is the point.
+          </p>
+        </article>
 
         <aside class="page-side">
           <section class="side-panel">
@@ -162,15 +159,6 @@
               <li>Former Software Development Engineer at SalesUp</li>
               <li>IEEE SPCOM 2024 author and 2026 journal acceptance</li>
             </ul>
-          </section>
-
-          <section class="side-panel">
-            <h3>Best entry points</h3>
-            <div class="button-row">
-              <a class="button" href="/projects/">Selected work</a>
-              <a class="button-secondary" href="/publications/">Publications</a>
-              <a class="button-secondary" href="/contact/">Contact</a>
-            </div>
           </section>
         </aside>
       </section>

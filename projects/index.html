@@ -62,9 +62,8 @@
         <p class="eyebrow">Selected work</p>
         <h1 class="page-title">Selected projects.</h1>
         <p class="page-summary">
-          I care most about projects that force a real engineering question: where is the bottleneck, what
-          should the system output look like, and what changes once the work has to behave reliably outside
-          a notebook.
+          These are the projects I would point to first. They are the ones where I had to work through a
+          real systems or engineering problem and make something behave properly beyond a prototype.
         </p>
       </section>
 
@@ -78,7 +77,16 @@
               can be removed from transformer inference when projection and attention are fused into a tighter
               execution path?
             </p>
+            <p>
+              The work focused on shared-memory layout, tiling strategy, and profiler-guided reasoning about
+              where HBM traffic was actually being spent. That made it less of a pure optimization exercise
+              and more of a careful systems study of what the kernel was doing on H100 hardware.
+            </p>
             <div class="entry-callout">11–55% HBM bandwidth reduction on H100, with correctness validated across all test cases.</div>
+            <div class="tags">
+              <span class="metric-pill">1.22x–1.41x speedup</span>
+              <span class="metric-pill muted">85–91% lower peak allocation</span>
+            </div>
             <div class="tags">
               <span class="tag">CUDA</span><span class="tag">NSight</span><span class="tag">PyTorch</span><span class="tag">H100</span>
             </div>
@@ -126,23 +134,6 @@
           <article class="entry-card">
             <div class="entry-topline">
               <div>
-                <div class="entry-kicker">Verification and automation</div>
-                <h3 class="entry-title"><a href="/projects/rtl-optimization-loop/">RTL Optimization Loop</a></h3>
-              </div>
-              <div class="entry-date">EDA / automation</div>
-            </div>
-            <p>
-              A tooling workflow combining Verilator, Yosys, OpenSTA, and LLM-guided patches to reduce manual
-              loop time in digital design verification and timing analysis.
-            </p>
-            <div class="button-row">
-              <a class="button-secondary" href="/projects/rtl-optimization-loop/">Read case study</a>
-            </div>
-          </article>
-
-          <article class="entry-card">
-            <div class="entry-topline">
-              <div>
                 <div class="entry-kicker">Applied generative systems</div>
                 <h3 class="entry-title"><a href="/projects/svg-generation-competition/">SVG Generation Competition Workflow</a></h3>
               </div>
@@ -156,6 +147,77 @@
             <div class="button-row">
               <a class="button-secondary" href="/projects/svg-generation-competition/">Read case study</a>
             </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Additional projects</p>
+            <h2>More systems and backend work from my resumes.</h2>
+          </div>
+        </div>
+
+        <div class="entry-list">
+          <article class="entry-card">
+            <div class="entry-topline">
+              <div>
+                <div class="entry-kicker">Distributed systems</div>
+                <h3 class="entry-title">Distributed Log Aggregation System</h3>
+              </div>
+              <div class="entry-date">Python / Redis / AWS</div>
+            </div>
+            <p>
+              Built a distributed log aggregation system with producer-consumer concurrency, B-tree indexing,
+              Redis caching, and REST APIs for ingestion and filtering.
+            </p>
+            <div class="entry-callout">Sub-50ms query response under high-throughput writes, deployed on AWS EC2 with Docker.</div>
+          </article>
+
+          <article class="entry-card">
+            <div class="entry-topline">
+              <div>
+                <div class="entry-kicker">Microservices and orchestration</div>
+                <h3 class="entry-title">Microservice-Based Task Orchestration Platform</h3>
+              </div>
+              <div class="entry-date">Flask / Supabase / CI/CD</div>
+            </div>
+            <p>
+              Architected a distributed task platform with priority queuing, retry logic, audit logging, and
+              async execution paths designed for operational reliability.
+            </p>
+            <div class="entry-callout">Handled 10,000+ daily background jobs with Dockerized deployment on AWS EC2.</div>
+          </article>
+
+          <article class="entry-card">
+            <div class="entry-topline">
+              <div>
+                <div class="entry-kicker">Applied machine learning systems</div>
+                <h3 class="entry-title">End-to-End Fraud Detection Platform</h3>
+              </div>
+              <div class="entry-date">ML pipeline / AWS / ETL</div>
+            </div>
+            <p>
+              Built a fraud detection pipeline with automated ETL, containerized services, and continuous
+              deployment support for high-volume transaction processing.
+            </p>
+            <div class="entry-callout">Processed 1M+ daily transactions with ensemble models reaching AUC 0.96.</div>
+          </article>
+
+          <article class="entry-card">
+            <div class="entry-topline">
+              <div>
+                <div class="entry-kicker">Concurrency and infrastructure</div>
+                <h3 class="entry-title">Distributed Rate Limiter</h3>
+              </div>
+              <div class="entry-date">Python / Redis / pytest</div>
+            </div>
+            <p>
+              Implemented token bucket and sliding window log rate limiting with thread-safe shared state,
+              structured logging, and integration tests for burst traffic.
+            </p>
+            <div class="entry-callout">Consistent cross-instance enforcement with sub-5ms overhead.</div>
           </article>
         </div>
       </section>

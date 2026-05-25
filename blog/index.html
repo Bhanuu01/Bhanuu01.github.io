@@ -6,7 +6,7 @@
     <title>Blog | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="Technical writing by Bhanuja Karumuru on backend systems, MLOps, CUDA, and engineering decisions that carry into production."
+      content="Notes on systems, ML, and research work by Bhanuja Karumuru."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
@@ -14,12 +14,12 @@
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Blog | Bhanuja Karumuru" />
-    <meta property="og:description" content="Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering." />
+    <meta property="og:description" content="Notes on systems, ML, and research work by Bhanuja Karumuru." />
     <meta property="og:url" content="https://bhanuu01.github.io/blog/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Blog | Bhanuja Karumuru" />
-    <meta name="twitter:description" content="Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering." />
+    <meta name="twitter:description" content="Notes on systems, ML, and research work by Bhanuja Karumuru." />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
@@ -28,7 +28,7 @@
         "@type": "CollectionPage",
         "name": "Blog | Bhanuja Karumuru",
         "url": "https://bhanuu01.github.io/blog/",
-        "description": "Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering."
+        "description": "Notes on systems, ML, and research work by Bhanuja Karumuru."
       }
     </script>
   </head>
@@ -60,14 +60,13 @@
     <main class="site-shell">
       <section class="section-block">
         <p class="eyebrow">Writing</p>
-        <h1 class="page-title">Technical notes from the work behind the resume bullets.</h1>
+        <h1 class="page-title">Notes on systems, ML, and research work.</h1>
         <p class="page-summary">
-          I use writing to explain the engineering choices that matter after the headline metric: what changed,
-          how I reasoned about the tradeoff, and what I would do differently next time.
+          This is where I write about things I learned while building, debugging, or rethinking a system.
         </p>
       </section>
 
-      <section class="writing-list">
+      <section class="entry-list">
         <article class="writing-card">
           <div class="entry-topline">
             <div>
@@ -77,50 +76,46 @@
             <div class="entry-date">May 24, 2026</div>
           </div>
           <p>
-            A short note on dysarthric speech, low-resource labels, and why augmentation choices matter more than
-            they first appear in severity-classification work.
+            A short note on low-resource speech data, careful augmentation, and why model choice is not the whole story.
           </p>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
-              <div class="entry-kicker">Backend engineering</div>
+              <div class="entry-kicker">Systems</div>
               <h2 class="writing-title"><a href="/blog/backend-p99-latency-reduction/">What I learned from redesigning backend APIs to reduce P99 latency</a></h2>
             </div>
             <div class="entry-date">May 19, 2026</div>
           </div>
           <p>
-            A note on async task pipelines, latency as architecture rather than micro-optimization, and why the
-            request path should own less work than we often let it.
+            A backend note on moving work off the request path and making latency problems easier to reason about.
           </p>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
-              <div class="entry-kicker">MLOps</div>
+              <div class="entry-kicker">ML workflows</div>
               <h2 class="writing-title"><a href="/blog/production-mlops-deadline-detection/">Lessons from turning a deadline extraction model into a production MLOps workflow</a></h2>
             </div>
             <div class="entry-date">May 10, 2026</div>
           </div>
           <p>
-            A closer look at gating, experiment tracking, review paths, and why production behavior matters as much as
-            offline model quality.
+            A note on gating, review paths, and the parts of an ML system that matter once someone has to use the output.
           </p>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
-              <div class="entry-kicker">CUDA and systems</div>
+              <div class="entry-kicker">Systems</div>
               <h2 class="writing-title"><a href="/blog/cuda-transformer-inference-notes/">CUDA notes on transformer inference, memory bandwidth, and kernel fusion</a></h2>
             </div>
             <div class="entry-date">Apr 28, 2026</div>
           </div>
           <p>
-            Practical notes from profiling fused attention kernels, reasoning about HBM traffic, and learning to trust
-            measurement more than intuition.
+            A short write-up on profiling, memory movement, and why bandwidth wins do not always explain total runtime.
           </p>
         </article>
       </section>

@@ -73,7 +73,7 @@
         </button>
         <nav aria-label="Primary">
           <ul class="nav-links">
-            <li><a href="/" aria-current="page">About</a></li>
+            <li><a href="/about/">About</a></li>
             <li><a href="/experience/">Experience</a></li>
             <li><a href="/projects/">Projects</a></li>
             <li><a href="/hackathons/">Hackathons</a></li>
@@ -91,37 +91,24 @@
       <section class="page-hero">
         <div>
           <p class="availability">Incoming Software Development Engineer Intern at Amazon</p>
-          <p class="eyebrow">About</p>
+          <p class="availability">Actively looking for full-time opportunities beginning in May 2027</p>
+          <p class="eyebrow">Overview</p>
           <h1 class="hero-title">Bhanuja Karumuru</h1>
           <p class="hero-summary">
             I am an M.S. Computer Engineering student at NYU Tandon working across ML systems, backend
             engineering, and applied research. My recent work includes CUDA optimization, production-minded
             NLP pipelines, robotics perception workflows, and secure systems projects at NYU.
           </p>
-          <p class="meta-line">Also searchable as Bhanu Karumuru, B. Karumuru, and BK3170.</p>
           <div class="hero-actions">
             <a class="button" href="/projects/">Selected Work</a>
             <a class="button-secondary" href="/cv/">View CV</a>
             <a class="button-secondary" href="/contact/">Contact</a>
             <a class="button-secondary" href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn ↗</a>
           </div>
-          <div class="metrics-strip">
-            <span class="metric-pill">+40% throughput at SalesUp</span>
-            <span class="metric-pill">25% P99 latency reduction</span>
-            <span class="metric-pill muted">IEEE SPCOM 2024</span>
-            <span class="metric-pill muted">Journal acceptance in 2026</span>
-          </div>
         </div>
         <div class="hero-side">
           <div class="portrait-card">
             <img src="/assets/bhanuja-profile.png" alt="Bhanuja Karumuru" />
-          </div>
-          <div class="side-note">
-            <p>
-              I like work that has a measurable systems question behind it, whether that means profiling a GPU
-              kernel, making an ML pipeline easier to operate, or tightening a backend path that is too slow in
-              production.
-            </p>
           </div>
         </div>
       </section>
@@ -148,7 +135,7 @@
             </div>
             <div class="timeline-entry">
               <div class="timeline-date">2024–2025</div>
-              <h3>Backend foundations at SalesUp</h3>
+              <h3>Shipping backend systems at SalesUp</h3>
               <p>
                 Worked on backend APIs, async pipelines, and AI-powered automation features, improving
                 throughput and tail latency in production.
@@ -156,7 +143,7 @@
             </div>
             <div class="timeline-entry">
               <div class="timeline-date">2020–2024</div>
-              <h3>Signal processing roots at NIT Sikkim</h3>
+              <h3>Signal processing and research at NIT Sikkim</h3>
               <p>
                 Built the academic foundation that led into speech, ML, and hardware-aware systems work,
                 including my publication at IEEE SPCOM 2024.
@@ -172,10 +159,6 @@
             <p class="eyebrow">Selected work</p>
             <h2>A few projects that show how I work.</h2>
           </div>
-          <p>
-            These are the projects I would point to first for anyone trying to understand the kind of engineering
-            work I want to keep doing.
-          </p>
         </div>
 
         <div class="work-grid">
@@ -186,12 +169,22 @@
               CUDA kernel exploration for transformer inference, focused on fusing QKV projection and attention
               to reduce HBM traffic and reason more clearly about GPU bottlenecks.
             </p>
+            <p>
+              The useful part of this project was not just the final bandwidth result. It was learning how to profile
+              a GPU path carefully, validate the kernel against PyTorch references, and understand where the next
+              bottleneck still remained after the first optimization worked.
+            </p>
+            <div class="entry-callout">
+              Profiled on H100, validated across reference tests, and used as a practical study in how measurement
+              changes CUDA optimization decisions.
+            </div>
             <div class="metrics-strip">
               <span class="metric-pill">11–55% HBM bandwidth reduction</span>
               <span class="metric-pill muted">H100 evaluation</span>
             </div>
             <div class="button-row">
               <a class="button" href="/projects/fused-linear-attention/">Read case study</a>
+              <a class="button-secondary" href="https://github.com/Bhanuu01/FusedLinearAttention" target="_blank" rel="noreferrer">Repository ↗</a>
               <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">Related note</a>
             </div>
           </article>
@@ -225,9 +218,6 @@
             <p class="eyebrow">Recent milestones</p>
             <h2>Recent milestones.</h2>
           </div>
-          <p>
-            These are the updates that best explain where I am now and what has changed over the last year.
-          </p>
         </div>
 
         <div class="story-grid">

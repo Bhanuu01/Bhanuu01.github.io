@@ -163,7 +163,7 @@ main {
 
 .page-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 304px;
+  grid-template-columns: minmax(0, 1fr) 300px;
   gap: 34px;
   align-items: start;
   margin-bottom: 54px;
@@ -271,6 +271,8 @@ main {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  width: min(100%, 320px);
+  justify-self: end;
 }
 
 .portrait-card {
@@ -283,11 +285,11 @@ main {
 
 .portrait-card img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: center 20%;
-  transform: scale(1.17);
-  filter: brightness(1.08) contrast(1.03);
+  object-position: center 18%;
+  transform: scale(1.06);
+  filter: brightness(1.02) contrast(1.01) saturate(0.96);
 }
 
 .side-note {
@@ -509,6 +511,10 @@ main {
   color: var(--ink-soft);
 }
 
+.feature-work .entry-callout {
+  margin-top: 16px;
+}
+
 .support-item {
   padding: 18px;
   border-radius: 18px;
@@ -728,6 +734,72 @@ main {
   padding: 22px 24px;
 }
 
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.topic-card {
+  padding: 22px 24px;
+}
+
+.topic-card .entry-title {
+  margin: 4px 0 0;
+}
+
+.topic-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.topic-item + .topic-item {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.topic-topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topic-link {
+  color: inherit;
+  font-weight: 700;
+}
+
+.topic-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.topic-item p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+}
+
+.archive-list {
+  gap: 0;
+}
+
+.archive-item h3 a {
+  color: inherit;
+}
+
+.archive-item h3 a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.archive-item .role-line {
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
 .writing-title a,
 .publication-title a,
 .project-name a {
@@ -942,6 +1014,7 @@ main {
   .page-hero,
   .story-grid,
   .work-grid,
+  .topic-grid,
   .page-grid,
   .article-wrap {
     grid-template-columns: 1fr;
@@ -949,7 +1022,7 @@ main {
 
   .page-hero .hero-side {
     order: -1;
-    width: min(100%, 304px);
+    width: min(100%, 320px);
   }
 
   .page-side,

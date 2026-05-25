@@ -66,8 +66,8 @@
         <p class="eyebrow">Research output</p>
         <h1 class="page-title">Research that grew out of signal processing and stayed connected to systems.</h1>
         <p class="page-summary">
-          My publications are still few enough to present carefully. What matters to me is that they show where my
-          technical instincts started and how they now connect to machine learning systems work.
+          These papers come from the part of my work that started in speech and signal processing. They also mark
+          the beginning of how I started thinking more seriously about machine learning and systems.
         </p>
       </section>
 
@@ -76,20 +76,24 @@
           <div class="entry-topline">
             <div>
               <div class="entry-kicker">Conference paper</div>
-              <h2 class="publication-title">In-Domain Data Augmentation for Dysarthria Severity Classification</h2>
+              <h2 class="publication-title">In-Domain Data Augmentation to Enhance Severity Level Classification of Dysarthria from Speech</h2>
             </div>
             <div class="entry-date">2024</div>
           </div>
           <p>
-            Presented at <strong>IEEE SPCOM 2024</strong>. The paper studies in-domain augmentation strategies for
-            dysarthric speech, focusing on improving severity classification in a low-resource setting where generic
-            augmentation methods are often a poor fit.
+            Presented at <strong>IEEE SPCOM 2024</strong>. This paper studies dysarthria severity classification in a
+            low-resource setting, where collecting enough labeled speech is difficult and off-the-shelf augmentation
+            choices are not always a good fit.
           </p>
           <p>
-            This remains the clearest published example of my early research interests: signal processing first, then
-            machine learning decisions built on top of that foundation.
+            We explored speaking-rate, pitch, formant, and vocal-tract length perturbation, then looked at how those
+            choices changed classification performance. The combined augmentation setup gave a 42.86% relative
+            improvement over the baseline and became the clearest early example of how I like to work on constrained
+            ML problems.
           </p>
+          <div class="entry-callout">Low-resource dysarthric speech classification with a 42.86% relative improvement over the baseline.</div>
           <div class="button-row">
+            <a class="button-secondary" href="/assets/papers/SPCOM_2024_Severity_Classification.pdf" target="_blank" rel="noreferrer">Paper PDF ↗</a>
             <a class="button-secondary" href="https://dblp.org/rec/conf/spcom/KarumuruSK24" target="_blank" rel="noreferrer">DBLP record ↗</a>
             <a class="button-secondary" href="https://ece.iisc.ac.in/~spcom/2024/accepted_papers_complete.html" target="_blank" rel="noreferrer">SPCOM accepted papers ↗</a>
           </div>
@@ -104,16 +108,20 @@
             <div class="entry-date">Apr 2026</div>
           </div>
           <p>
-            Accepted for publication in the <strong>Journal of Signal Processing Systems</strong>. This work extends my
-            interest in speech and signal processing under constrained data conditions, and it remains one of the clearest
-            links between my academic foundation and later ML work.
+            Accepted for publication in the <strong>Journal of Signal Processing Systems</strong>. This paper extends
+            the earlier SPCOM work by studying how different augmentation methods work in combination rather than in
+            isolation for dysarthria severity classification.
           </p>
           <p>
-            The paper studies how data-augmentation choices affect dysarthria severity classification when labeled
-            speech data is limited, with an emphasis on improving robustness rather than relying on generic augmentation
-            recipes.
+            The study evaluates fusion strategies across the TORGO and UASpeech datasets in both speaker-dependent and
+            speaker-independent settings. The strongest results showed relative improvements of 42.86% and 12.22% on
+            TORGO, and 18.78% and 5.29% on UASpeech, depending on the evaluation setting.
           </p>
           <p class="meta-line">Manuscript ID: VLSI-D-25-00096R1</p>
+          <div class="entry-callout">A follow-on journal paper that turns one augmentation idea into a broader comparative study across two dysarthric speech datasets.</div>
+          <div class="button-row">
+            <a class="button-secondary" href="/assets/papers/Fusion_of_data_augmentation_for_improved_dysarthria_severity_classification.pdf" target="_blank" rel="noreferrer">Paper PDF ↗</a>
+          </div>
         </article>
       </section>
     </main>
