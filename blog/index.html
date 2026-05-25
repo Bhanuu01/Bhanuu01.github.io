@@ -76,47 +76,66 @@
             <div class="entry-date">May 24, 2026</div>
           </div>
           <p>
-            A short note on low-resource speech data, careful augmentation, and why model choice is not the whole story.
+            A note on low-resource speech data, speaker variability, and why augmentation choices can matter more than model swaps.
           </p>
+          <div class="entry-signals">
+            <span class="entry-signal">data focus</span>
+            <span class="entry-signal">research note</span>
+          </div>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
               <div class="entry-kicker">Systems</div>
-              <h2 class="writing-title"><a href="/blog/backend-p99-latency-reduction/">What I learned from redesigning backend APIs to reduce P99 latency</a></h2>
+              <h2 class="writing-title"><a href="/blog/backend-p99-latency-reduction/">How moving work off the request path cut P99 latency by 25%</a></h2>
             </div>
             <div class="entry-date">May 19, 2026</div>
           </div>
           <p>
-            A backend note on moving work off the request path and making latency problems easier to reason about.
+            A backend write-up with a before-and-after request-path design, async handoff pattern, and the metrics behind the shift.
           </p>
+          <div class="entry-signals">
+            <span class="entry-signal">diagram</span>
+            <span class="entry-signal">code</span>
+            <span class="entry-signal">metrics</span>
+          </div>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
               <div class="entry-kicker">ML workflows</div>
-              <h2 class="writing-title"><a href="/blog/production-mlops-deadline-detection/">Lessons from turning a deadline extraction model into a production MLOps workflow</a></h2>
+              <h2 class="writing-title"><a href="/blog/production-mlops-deadline-detection/">Designing a reviewable deadline extraction pipeline for contracts</a></h2>
             </div>
             <div class="entry-date">May 10, 2026</div>
           </div>
           <p>
-            A note on gating, review paths, and the parts of an ML system that matter once someone has to use the output.
+            A staged NLP pipeline with a gate classifier, NER layer, structured JSON output, and low-confidence review routing.
           </p>
+          <div class="entry-signals">
+            <span class="entry-signal">diagram</span>
+            <span class="entry-signal">json output</span>
+            <span class="entry-signal">metrics</span>
+          </div>
         </article>
 
         <article class="writing-card">
           <div class="entry-topline">
             <div>
               <div class="entry-kicker">Systems</div>
-              <h2 class="writing-title"><a href="/blog/cuda-transformer-inference-notes/">CUDA notes on transformer inference, memory bandwidth, and kernel fusion</a></h2>
+              <h2 class="writing-title"><a href="/blog/cuda-transformer-inference-notes/">Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said</a></h2>
             </div>
             <div class="entry-date">Apr 28, 2026</div>
           </div>
           <p>
-            A short write-up on profiling, memory movement, and why bandwidth wins do not always explain total runtime.
+            A CUDA write-up with benchmark crossover points, shared-memory tiling, and the profiler clue that exposed the next bottleneck.
           </p>
+          <div class="entry-signals">
+            <span class="entry-signal">diagram</span>
+            <span class="entry-signal">code</span>
+            <span class="entry-signal">benchmarks</span>
+          </div>
         </article>
       </section>
     </main>

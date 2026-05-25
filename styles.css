@@ -512,6 +512,28 @@ main {
   color: var(--ink-soft);
 }
 
+.entry-signals,
+.post-link-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.entry-signal,
+.post-link-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(232, 237, 247, 0.78);
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .feature-work .entry-callout {
   margin-top: 16px;
 }
@@ -891,7 +913,9 @@ main {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: #f4f6fa;
+  background: linear-gradient(180deg, #1f2b45 0%, #192236 100%);
+  color: #edf2fb;
+  box-shadow: 0 20px 38px rgba(20, 31, 61, 0.12);
 }
 
 .article pre code {
@@ -901,6 +925,83 @@ main {
   border-radius: 0;
   font-size: 0.9rem;
   line-height: 1.6;
+  color: inherit;
+}
+
+.code-shell {
+  margin: 18px 0;
+  border: 1px solid rgba(42, 58, 94, 0.22);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1f2b45 0%, #192236 100%);
+  box-shadow: 0 20px 38px rgba(20, 31, 61, 0.12);
+}
+
+.code-shell pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(124, 141, 177, 0.18);
+  background: rgba(11, 18, 31, 0.34);
+}
+
+.code-label {
+  color: rgba(237, 242, 251, 0.92);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.code-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(124, 141, 177, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(237, 242, 251, 0.92);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.code-copy:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.code-copy.is-copied {
+  border-color: rgba(176, 225, 195, 0.28);
+  color: #b9e2c7;
+}
+
+.article .lead-note {
+  margin: 14px 0 24px;
+  padding: 14px 16px;
+  border: 1px solid rgba(215, 219, 226, 0.92);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--ink);
+  font-size: 0.96rem;
+}
+
+.article .figure-caption {
+  margin: 10px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
 }
 
 .artifact-table {
@@ -941,6 +1042,15 @@ main {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow-soft);
+}
+
+.diagram-label {
+  margin: 0 0 12px;
+  color: var(--ink-muted);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .flow-strip {
@@ -1008,6 +1118,53 @@ main {
 
 .article-panel .button-row {
   margin-top: 14px;
+}
+
+.post-links {
+  margin-top: 34px;
+}
+
+.post-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.post-link-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow-soft);
+}
+
+.post-link-card:hover {
+  text-decoration: none;
+  border-color: rgba(59, 79, 134, 0.26);
+  transform: translateY(-1px);
+}
+
+.post-link-label {
+  color: var(--ink-muted);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.post-link-title {
+  color: #152338;
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.post-link-note {
+  color: var(--ink-soft);
+  font-size: 0.93rem;
 }
 
 .back-link {
@@ -1304,6 +1461,19 @@ main {
   .mini-figure {
     padding: 14px;
     border-radius: 18px;
+  }
+
+  .code-toolbar {
+    padding: 11px 12px;
+  }
+
+  .code-label,
+  .code-copy {
+    font-size: 0.7rem;
+  }
+
+  .post-links-grid {
+    grid-template-columns: 1fr;
   }
 
   .flow-node {

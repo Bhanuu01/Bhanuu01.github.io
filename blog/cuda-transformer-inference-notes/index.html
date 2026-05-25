@@ -3,30 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru</title>
+    <title>Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me about transformer inference."
+      content="A CUDA write-up on profiling fused and hybrid attention kernels on H100, reducing HBM traffic, and finding the next bottleneck."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://bhanuu01.github.io/blog/cuda-transformer-inference-notes/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru" />
-    <meta property="og:description" content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me." />
+    <meta property="og:title" content="Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said | Bhanuja Karumuru" />
+    <meta property="og:description" content="A CUDA write-up on fused and hybrid attention kernels, HBM traffic, crossover points, and why the profiler mattered more than intuition." />
     <meta property="og:url" content="https://bhanuu01.github.io/blog/cuda-transformer-inference-notes/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru" />
-    <meta name="twitter:description" content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me." />
+    <meta name="twitter:title" content="Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="A CUDA write-up on fused and hybrid attention kernels, HBM traffic, crossover points, and why the profiler mattered more than intuition." />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "CUDA notes on transformer inference, memory bandwidth, and kernel fusion",
+        "headline": "Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said",
         "datePublished": "2026-04-28",
         "dateModified": "2026-04-28",
         "author": {
@@ -37,7 +37,7 @@
           "@type": "Person",
           "name": "Bhanuja Karumuru"
         },
-        "description": "Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me about transformer inference.",
+        "description": "A CUDA write-up on profiling fused and hybrid attention kernels on H100, reducing HBM traffic, and finding the next bottleneck.",
         "url": "https://bhanuu01.github.io/blog/cuda-transformer-inference-notes/"
       }
     </script>
@@ -73,65 +73,255 @@
         <article class="article">
           <header class="article-header">
             <p class="eyebrow">CUDA / systems</p>
-            <h1>CUDA notes on transformer inference, memory bandwidth, and kernel fusion</h1>
+            <h1>Profiling a fused attention kernel on H100: bandwidth wins, wall-time losses, and what the profiler said</h1>
             <p class="article-meta">Apr 28, 2026</p>
           </header>
 
           <p>
-            My strongest CUDA lesson so far is simple: if the profiler disagrees with your intuition, trust the
-            profiler. Transformer inference invites assumptions about compute, but in practice the path can become
-            bandwidth-bound much earlier than expected.
+            This post came out of a CUDA project on H100 where the original question sounded simple: if projection and
+            attention are kept closer together, can we cut enough HBM traffic to make inference meaningfully faster?
+            The answer turned out to be “sometimes, but not for the reason I first wanted.” Lower bandwidth was part of
+            the story. The profiler made it obvious that it was not the whole story.
+          </p>
+          <p class="lead-note">
+            Setup: H100 SXM5, 132 SMs, 3.35 TB/s HBM bandwidth, and a three-kernel family comparing a fully fused
+            scalar path with two hybrid paths that split projection and attention differently.
           </p>
 
-          <h2>Why fused kernels mattered to me</h2>
+          <h2>The problem setup</h2>
           <p>
-            Fusing projection and attention reduced intermediate writes and reads to HBM, which made the experiment
-            a useful way to reason about memory movement instead of only looking at arithmetic throughput.
+            Standard transformer inference paths tend to split QKV projection and attention into separate stages. That
+            means writing intermediate tensors to HBM and then pulling them back into the next stage. On H100, that
+            round-trip is expensive enough to be worth challenging, but the more interesting question is what happens
+            after you reduce it. Do you actually get wall-time back, or do you simply reveal a different bottleneck?
           </p>
 
-          <h2>What the profiler changed</h2>
+          <h2>What I built</h2>
           <p>
-            NSight made it much easier to spot the gap between “we reduced bandwidth” and “we improved total runtime.”
-            The remaining scalar fp32 projection loops kept pointing to the next step: use Tensor Cores more effectively
-            instead of treating bandwidth wins as the entire story.
+            We explored three paths: a fully fused scalar kernel that combined projection and attention without writing
+            Q, K, or V back to HBM, a hybrid path that kept projection on cuBLAS and replaced attention with a custom
+            tiled kernel, and a warp-cooperative bf16 hybrid path that became the strongest custom runtime variant.
           </p>
-
-          <h2>Concrete numbers I kept coming back to</h2>
           <p>
-            The strongest runs reduced HBM traffic by as much as 54.6%, reached 1.22x–1.41x speedup on the best
-            short-sequence cases, and cut peak GPU allocation by 85–91%. Those numbers were useful because they showed
-            the memory story was real even when end-to-end gains were not uniform across every case.
+            My contribution centered on the tiling strategy, shared-memory layout, an HBM traffic model, a NumPy-based
+            oracle for correctness, and WMMA benchmarking to test the Tensor Core direction directly.
           </p>
 
+          <h2>The first wrong assumption</h2>
+          <p>
+            The naive mental model was that if the fused path removed enough global-memory traffic, the rest would take
+            care of itself. That part did not hold. The fully fused scalar path did reduce memory movement, but it
+            still lost badly in wall time because the projection loops were running in scalar fp32 and leaving Tensor
+            Cores idle.
+          </p>
+
+          <h2>Why the tile shape mattered</h2>
+          <p>
+            The final fused kernel used a <code>T = 64</code> tile shape. That gave a workable balance between
+            shared-memory residency and thread-level coordination without pushing the kernel into an even more fragile
+            register or occupancy tradeoff. The shared-memory layout used <code>[T][d+1]</code> padding to avoid bank
+            conflicts while staging Q, K, and V tiles.
+          </p>
+          <pre data-code-label="Shared-memory tiling sketch"><code>// simplified shared-memory sketch
+constexpr int T = 64;
+__shared__ float q_tile[T][D + 1];
+__shared__ float k_tile[T][D + 1];
+__shared__ float v_tile[T][D + 1];
+
+for each tile in sequence:
+  load tile into shared memory
+  compute local attention scores
+  accumulate outputs
+
+// padding on the second dimension helps avoid bank conflicts</code></pre>
+
+          <h2>Profiler view of the workflow</h2>
+          <figure class="mini-figure">
+            <p class="diagram-label">Kernel family diagram</p>
+            <div class="flow-strip">
+              <div class="flow-node">
+                <strong>Standard path</strong>
+                <span>projection and attention as separate stages</span>
+                <span>intermediate QKV written to and read from HBM</span>
+              </div>
+              <div class="flow-node">
+                <strong>Fully fused path</strong>
+                <span>cuts the QKV round-trip</span>
+                <span>but leaves scalar fp32 projection loops in the hot path</span>
+              </div>
+              <div class="flow-node flow-node-accent">
+                <strong>Best custom path</strong>
+                <span>projection stays on cuBLAS Tensor Cores</span>
+                <span>custom bf16 attention kernel wins at short sequence lengths</span>
+              </div>
+            </div>
+            <p class="figure-caption">
+              The profiler changed the question from “did fusion help memory?” to “what is left once memory stops being
+              the dominant explanation?”
+            </p>
+          </figure>
+
+          <h2>What the numbers said</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Signal</th>
+                <th>Observed result</th>
+                <th>What it meant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Correctness</td>
+                <td>11 / 11 tests passed, max absolute error ≤ 1.5 × 10<sup>-7</sup></td>
+                <td>The custom kernels were close enough to the PyTorch reference path to make the profiler output trustworthy.</td>
+              </tr>
+              <tr>
+                <td>HBM reads</td>
+                <td>up to 54.6% lower</td>
+                <td>The original memory-traffic hypothesis was real. The QKV round-trip was expensive enough to matter.</td>
+              </tr>
+              <tr>
+                <td>Best short-sequence speedups</td>
+                <td>1.22x at <code>N = 64</code>, 1.41x at <code>N = 128</code></td>
+                <td>The hybrid bf16 path turned the memory improvement into real latency wins in the right regime.</td>
+              </tr>
+              <tr>
+                <td>Peak allocation</td>
+                <td>85–91% lower</td>
+                <td>The best custom path improved memory behavior even when it was not the fastest option at every sequence length.</td>
+              </tr>
+              <tr>
+                <td>Main remaining bottleneck</td>
+                <td>scalar fp32 projection loops</td>
+                <td>The next optimization step was clearly compute-side, not just more fusion.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Where the crossover happened</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Sequence length</th>
+                <th>PyTorch baseline</th>
+                <th>Best custom kernel</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>64</td>
+                <td>107.2 µs</td>
+                <td>88.0 µs</td>
+                <td>1.22x faster</td>
+              </tr>
+              <tr>
+                <td>128</td>
+                <td>142.1 µs</td>
+                <td>100.5 µs</td>
+                <td>1.41x faster</td>
+              </tr>
+              <tr>
+                <td>256</td>
+                <td>127.2 µs</td>
+                <td>164.2 µs</td>
+                <td>custom path loses</td>
+              </tr>
+              <tr>
+                <td>512</td>
+                <td>121.6 µs</td>
+                <td>293.3 µs</td>
+                <td>baseline clearly ahead</td>
+              </tr>
+              <tr>
+                <td>1024</td>
+                <td>200.7 µs</td>
+                <td>556.4 µs</td>
+                <td>baseline clearly ahead</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>What did not work</h2>
+          <p>
+            The fully fused scalar path is the part I would not hide. It looked like the most aggressive optimization,
+            and it was not the best runtime result. That was useful. It made the next step obvious: once the HBM cost
+            comes down, a weak compute path becomes easier to see.
+          </p>
+
+          <h2>What I would do next</h2>
+          <p>
+            The follow-up is straightforward: move the remaining hot projection math onto a better Tensor Core path and
+            treat the current fused scalar kernel as a measurement tool rather than the final answer. The WMMA
+            benchmarking already pointed in that direction.
+          </p>
+
+          <h2>Transferable principle</h2>
           <blockquote>
-            Kernel fusion taught me something more useful than a single optimization trick: how to ask better
-            performance questions in the first place.
+            If bandwidth improves but runtime does not, that is usually not a failed optimization. It is a profiler
+            telling you the next bottleneck finally has room to show itself.
           </blockquote>
-
-          <h2>What made the note worth writing down</h2>
-          <p>
-            The value of the experiment was not just that bandwidth came down. It was that profiling made the next
-            question more precise. After the HBM savings, the scalar fp32 loops became harder to ignore, which made
-            the next optimization direction much clearer.
-          </p>
         </article>
 
         <aside class="article-aside">
           <section class="article-panel">
             <h3>Snapshot</h3>
-            <p>HBM traffic down by up to 54.6%.</p>
-            <p>1.22x–1.41x speedup on the strongest short-sequence runs.</p>
+            <p>HBM reads down by up to 54.6%.</p>
+            <p>1.22x at N = 64 and 1.41x at N = 128.</p>
             <p>85–91% lower peak GPU allocation.</p>
           </section>
 
           <section class="article-panel">
-            <h3>Related project</h3>
+            <h3>Environment</h3>
+            <p>H100 SXM5</p>
+            <p>132 SMs</p>
+            <p>3.35 TB/s HBM bandwidth</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Related path</h3>
             <div class="button-row">
               <a class="button" href="/projects/fused-linear-attention/">Case study</a>
+              <a class="button-secondary" href="/projects/">Project overview</a>
             </div>
           </section>
         </aside>
       </div>
+
+      <section class="post-links" aria-label="Related reading">
+        <div class="post-links-grid">
+          <a class="post-link-card" href="/projects/fused-linear-attention/">
+            <span class="post-link-label">Related project</span>
+            <span class="post-link-title">Fused Linear Attention case study</span>
+            <span class="post-link-note">The fuller write-up with the benchmark framing and the hardware-software motivation behind the kernel work.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">h100</span>
+              <span class="post-link-tag">attention</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/projects/">
+            <span class="post-link-label">Project context</span>
+            <span class="post-link-title">Selected systems projects</span>
+            <span class="post-link-note">The surrounding set of projects that connect CUDA, backend work, and ML systems.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">systems</span>
+              <span class="post-link-tag">benchmarks</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/blog/backend-p99-latency-reduction/">
+            <span class="post-link-label">Next writing</span>
+            <span class="post-link-title">How moving work off the request path cut P99 latency by 25%</span>
+            <span class="post-link-note">A backend note on architectural bottlenecks and why the request path should do less work.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">backend</span>
+              <span class="post-link-tag">latency</span>
+            </span>
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">

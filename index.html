@@ -166,20 +166,20 @@
             <div class="work-kicker">Flagship case study</div>
             <h3 class="project-name"><a href="/projects/fused-linear-attention/">Fused Linear Attention</a></h3>
             <p>
-              CUDA kernel exploration for transformer inference, focused on fusing QKV projection and attention
-              to reduce HBM traffic and reason more clearly about GPU bottlenecks.
+              CUDA kernel work for transformer inference, built as a three-kernel study of what happens when QKV
+              projection and attention are fused, split, and benchmarked carefully on H100 hardware.
             </p>
             <p>
               The useful part of this project was not just the final bandwidth result. It was learning how to profile
-              a GPU path carefully, validate the kernel against PyTorch references, and understand where the next
-              bottleneck still remained after the first optimization worked.
+              a GPU path carefully, validate the kernel against references, and recognize when lower memory traffic
+              still was not enough because the compute path remained the real bottleneck.
             </p>
             <div class="entry-callout">
-              Profiled on H100, validated across reference tests, and used as a practical study in how measurement
-              changes CUDA optimization decisions.
+              Profiled on H100, validated across 11 correctness tests, and benchmarked through the short-sequence
+              crossover where the best custom path reached 1.41x speedup at N = 128.
             </div>
             <div class="metrics-strip">
-              <span class="metric-pill">11–55% HBM bandwidth reduction</span>
+              <span class="metric-pill">Up to 54.6% lower HBM reads</span>
               <span class="metric-pill muted">H100 evaluation</span>
             </div>
             <div class="button-row">

@@ -3,30 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru</title>
+    <title>How moving work off the request path cut P99 latency by 25% | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="A note on redesigning synchronous backend workflows into async task pipelines to improve throughput and reduce tail latency."
+      content="A backend write-up on moving campaign-generation and automation work off the request path to improve throughput and reduce tail latency."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://bhanuu01.github.io/blog/backend-p99-latency-reduction/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru" />
-    <meta property="og:description" content="A note on async task pipelines, throughput, and why tail latency is often an architecture problem." />
+    <meta property="og:title" content="How moving work off the request path cut P99 latency by 25% | Bhanuja Karumuru" />
+    <meta property="og:description" content="A backend write-up on async task pipelines, throughput, and why the request path should own less work." />
     <meta property="og:url" content="https://bhanuu01.github.io/blog/backend-p99-latency-reduction/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru" />
-    <meta name="twitter:description" content="A note on async task pipelines, throughput, and why tail latency is often an architecture problem." />
+    <meta name="twitter:title" content="How moving work off the request path cut P99 latency by 25% | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="A backend write-up on async task pipelines, throughput, and why the request path should own less work." />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "What I learned from redesigning backend APIs to reduce P99 latency",
+        "headline": "How moving work off the request path cut P99 latency by 25%",
         "datePublished": "2026-05-19",
         "dateModified": "2026-05-19",
         "author": {
@@ -37,7 +37,7 @@
           "@type": "Person",
           "name": "Bhanuja Karumuru"
         },
-        "description": "A note on redesigning synchronous backend workflows into async task pipelines to improve throughput and reduce tail latency.",
+        "description": "A backend write-up on moving campaign-generation and automation work off the request path to improve throughput and reduce tail latency.",
         "url": "https://bhanuu01.github.io/blog/backend-p99-latency-reduction/"
       }
     </script>
@@ -73,38 +73,127 @@
         <article class="article">
           <header class="article-header">
             <p class="eyebrow">Backend engineering</p>
-            <h1>What I learned from redesigning backend APIs to reduce P99 latency</h1>
+            <h1>How moving work off the request path cut P99 latency by 25%</h1>
             <p class="article-meta">May 19, 2026</p>
           </header>
 
           <p>
-            The most useful thing I learned from backend performance work at SalesUp was that tail latency is usually
-            an architecture problem before it is a code problem. We had API flows doing too much work inline, and the
-            result was that slow operations were directly competing with traffic that needed quick responses.
+            One of the more useful backend problems I worked on at SalesUp was not a broken endpoint so much as a
+            crowded one. Some request paths were trying to validate input, persist state, kick off campaign-related
+            automation, and wait long enough for the slower work to start behaving like part of the response itself.
+            The result was predictable: the median path still looked acceptable, but tail latency kept widening under
+            real traffic.
+          </p>
+          <p class="lead-note">
+            This was the moment the problem became architectural for me. The request path was owning work that did not
+            need to belong to the response cycle.
           </p>
 
-          <h2>Where the delay came from</h2>
+          <h2>The problem setup</h2>
           <p>
-            Some of the request paths were trying to finish work that did not actually belong in the response cycle.
-            That made the APIs heavier than they needed to be and pushed long-running operations into the same path as
-            user-facing traffic.
+            The slowest paths were the ones that mixed user-facing API behavior with heavier campaign-generation and
+            follow-up automation tasks. Those operations were valid work, but they were poor critical-path work. When
+            they stayed inline, they directly competed with traffic that only needed a fast acknowledgement and a
+            stable state transition.
+          </p>
+          <figure class="mini-figure">
+            <p class="diagram-label">Request path diagram</p>
+            <div class="flow-strip">
+              <div class="flow-node">
+                <strong>Before</strong>
+                <span>validate request</span>
+                <span>write state</span>
+                <span>start campaign and follow-up automation inline</span>
+                <span>hold the response open while slow work begins</span>
+              </div>
+              <div class="flow-node flow-node-accent">
+                <strong>After</strong>
+                <span>validate request</span>
+                <span>persist the required state</span>
+                <span>enqueue slower automation work</span>
+                <span>return a stable response immediately</span>
+              </div>
+            </div>
+            <p class="figure-caption">
+              The actual improvement came from shrinking the responsibility of the request path, not from a local code
+              micro-optimization.
+            </p>
+          </figure>
+
+          <h2>What I tried first</h2>
+          <p>
+            The first instinct was the usual one: look for expensive steps inside the handler and make them cheaper.
+            That mindset helped in small ways, but it did not change the real shape of the latency problem. As long as
+            the request path still owned slow automation work, cleaner code alone was not going to remove the long tail.
           </p>
 
-          <h2>What we changed</h2>
+          <h2>The design change that mattered</h2>
           <p>
-            The main shift was to treat the API as a coordinator. Validate the request, persist the right state, queue
-            the background work, and return a stable response instead of trying to finish everything synchronously.
-            That reduced contention on the request path and made retries and failure handling cleaner too.
+            The useful shift was to treat the API as a coordinator instead of a finisher. The handler should validate
+            the request, persist the right state, enqueue the slow work, and return a stable response. That sounds
+            obvious in retrospect, but it changed retries, failure handling, and capacity planning in a much cleaner
+            way than squeezing a few milliseconds out of one function.
           </p>
           <p>
-            In practice, the work that moved off the request path included slower campaign-generation and follow-up
-            automation tasks that did not need to block the user-facing response.
+            In practice, the tasks that moved out of the synchronous path were slower campaign-generation and follow-up
+            automation jobs. They still ran, but they no longer blocked the user-facing response.
+          </p>
+          <pre data-code-label="Request path handoff sketch"><code>// before
+POST /campaign
+  validate(request)
+  writeCampaignState()
+  generateCampaignContent()
+  triggerFollowUpAutomation()
+  return response
+
+// after
+POST /campaign
+  validate(request)
+  writeCampaignState()
+  enqueue("generate_campaign")
+  enqueue("follow_up_automation")
+  return accepted_response</code></pre>
+
+          <h2>What the numbers said</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Signal</th>
+                <th>Observed change</th>
+                <th>Why it mattered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Throughput</td>
+                <td>+40%</td>
+                <td>Removing heavier automation work from the synchronous path let the service absorb more traffic without the same contention.</td>
+              </tr>
+              <tr>
+                <td>P99 latency</td>
+                <td>-25%</td>
+                <td>The long tail improved once slow background work stopped competing directly with response-time-critical requests.</td>
+              </tr>
+              <tr>
+                <td>Response behavior</td>
+                <td>faster acknowledgement, slower work handled out-of-band</td>
+                <td>The API became easier to reason about because the request path no longer tried to complete unrelated automation before replying.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>What still needed care</h2>
+          <p>
+            Moving work off the request path does not remove complexity. It moves it. Once the slower jobs lived in a
+            background path, retries, queue behavior, and failure visibility mattered more. That tradeoff was worth it,
+            but it reinforced the point that architecture decisions only move pain around if you do not also make the
+            new boundary explicit.
           </p>
 
-          <h2>What stayed with me</h2>
+          <h2>Transferable principle</h2>
           <p>
-            I still think about this project whenever latency discussions get too local. Sometimes the fix is faster
-            code. Just as often, the real question is whether the system boundary is in the wrong place.
+            When an endpoint has a widening tail, the first question I ask now is not “which line is slow?” It is
+            “what work on this path does not actually belong to the response?”
           </p>
         </article>
 
@@ -113,17 +202,53 @@
             <h3>Proof</h3>
             <p>Throughput increased by 40%.</p>
             <p>P99 latency dropped by 25%.</p>
+            <p>Campaign-generation and follow-up automation moved off the synchronous path.</p>
           </section>
 
           <section class="article-panel">
-            <h3>Related pages</h3>
+            <h3>Related path</h3>
             <div class="button-row">
               <a class="button-secondary" href="/experience/">Experience</a>
+              <a class="button-secondary" href="/projects/">Projects</a>
               <a class="button-secondary" href="/cv/">CV</a>
             </div>
           </section>
         </aside>
       </div>
+
+      <section class="post-links" aria-label="Related reading">
+        <div class="post-links-grid">
+          <a class="post-link-card" href="/experience/">
+            <span class="post-link-label">Related experience</span>
+            <span class="post-link-title">SalesUp backend work</span>
+            <span class="post-link-note">The production context behind the throughput and latency changes on this post.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">fastapi</span>
+              <span class="post-link-tag">redis</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/projects/">
+            <span class="post-link-label">Project context</span>
+            <span class="post-link-title">Selected systems work</span>
+            <span class="post-link-note">A broader look at the backend and ML systems projects that sit next to this work.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">systems</span>
+              <span class="post-link-tag">backend</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/blog/production-mlops-deadline-detection/">
+            <span class="post-link-label">Next writing</span>
+            <span class="post-link-title">Designing a reviewable deadline extraction pipeline</span>
+            <span class="post-link-note">Another systems note, this time about gating, output contracts, and review boundaries.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">mlops</span>
+              <span class="post-link-tag">pipeline</span>
+            </span>
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">

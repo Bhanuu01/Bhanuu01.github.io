@@ -71,30 +71,37 @@
           <header class="article-header">
             <p class="eyebrow">CUDA / ML systems</p>
             <h1>Fused Linear Attention</h1>
-            <p class="hero-summary">A hardware-aware attempt to reduce transformer inference overhead at the kernel level.</p>
+            <p class="hero-summary">A three-kernel CUDA study of what happens when QKV projection and attention are fused, split, and benchmarked carefully on H100 GPUs.</p>
             <p class="article-meta">CUDA C++ · PyTorch · NSight · H100</p>
           </header>
 
           <p>
-            This project came from a systems question rather than a benchmark alone: what happens when QKV projection
-            and attention are forced into a tighter CUDA execution path so intermediate data moves less through HBM?
-            That framing made the project useful to me even before the final numbers were in, because it required
-            thinking about bottlenecks through measurement instead of intuition.
+            This project started from a systems question rather than a benchmark alone: what really changes when QKV
+            projection and attention are forced into a tighter CUDA execution path so intermediate data moves less
+            through HBM? The work became more useful once the profiler complicated the story. Reducing memory traffic
+            helped, but it did not automatically produce a faster kernel.
           </p>
 
           <h2>Problem</h2>
           <p>
             Standard inference paths split projection and attention into separate stages. Each stage writes
-            intermediate tensors back to HBM and then reads them again. On modern accelerators, that traffic can
-            become the real constraint long before arithmetic throughput is exhausted.
+            intermediate tensors back to HBM and then reads them again. On H100 hardware, that round-trip is worth
+            questioning, but the harder question is what happens after you remove it.
           </p>
 
-          <h2>Approach</h2>
+          <h2>Project shape</h2>
           <p>
-            I designed a fused execution strategy that combines QKV projection and scaled dot-product attention into
-            a single kernel path, then validated correctness against PyTorch references across multiple sequence
-            lengths. The work also included T=64 tiling decisions, shared-memory padding to avoid bank conflicts, and
-            NSight-based profiling to track where time and bandwidth were actually going.
+            This was built as a three-kernel family rather than one monolithic implementation. The fully fused path
+            combined projection and attention in one kernel without writing Q, K, or V back to HBM. The hybrid path
+            left projection on cuBLAS and replaced the attention stage with a custom tiled kernel. The final
+            <code>hybrid_warp4</code> bf16 path used warp-cooperative execution and became the best-performing custom variant.
+          </p>
+
+          <p>
+            My part of the project centered on the tiling strategy, shared-memory layout, the HBM traffic model,
+            a NumPy-based oracle for correctness, and WMMA benchmarking to test the Tensor Core direction directly.
+            The shared-memory arrays used <code>[T][d+1]</code> padding to avoid bank conflicts, and the final fused
+            kernel used a <code>T = 64</code> tile choice on H100.
           </p>
 
           <h2>Memory path sketch</h2>
@@ -106,21 +113,28 @@
                 <span>write intermediate tensors to HBM</span>
                 <span>run attention as a separate stage</span>
               </div>
+              <div class="flow-node">
+                <strong>Hybrid path</strong>
+                <span>projection stays on cuBLAS Tensor Cores</span>
+                <span>custom tiled attention replaces PyTorch SDPA</span>
+                <span>best custom runtime path in the study</span>
+              </div>
               <div class="flow-node flow-node-accent">
                 <strong>Fused path</strong>
                 <span>keep projection and attention closer together</span>
                 <span>cut repeated HBM writes and reads</span>
-                <span>profile what bottleneck remains after fusion</span>
+                <span>measure what bottleneck remains after fusion</span>
               </div>
             </div>
           </div>
 
-          <h2>What the numbers said</h2>
+          <h2>What the results actually showed</h2>
           <p>
-            The implementation reduced HBM bandwidth by 11–55% depending on sequence length. On the best short-sequence
-            runs, the fused path reached 1.22x–1.41x speedup over the reference path and reduced peak GPU allocation
-            by 85–91%. The gains were real, but not uniform. Once the bandwidth cost came down, the profiler still
-            pointed to scalar fp32 projection loops as the next limiter.
+            The important result was not simply that fusion reduced HBM traffic. It did. The more useful result was
+            seeing where that stopped being enough. The initial fully fused scalar kernel removed the QKV round-trip
+            but still ran much slower than the baseline because Tensor Cores stayed idle. The best custom path ended
+            up being the hybrid warp-cooperative bf16 version, which delegated projection back to cuBLAS and then beat
+            the PyTorch baseline at short sequence lengths.
           </p>
 
           <h2>Numbers</h2>
@@ -139,55 +153,121 @@
                 <td>Confirmed that the fused kernel matched the PyTorch reference path closely enough to trust profiling.</td>
               </tr>
               <tr>
-                <td>HBM traffic</td>
-                <td>11–55% reduction, with the strongest measured cut around 54.6%</td>
-                <td>Supported the original hypothesis that repeated global-memory movement was a real cost.</td>
+                <td>Short-sequence wins</td>
+                <td>1.22x speedup at N = 64 and 1.41x at N = 128</td>
+                <td>Showed that the custom path could turn the memory idea into real runtime wins in the right regime.</td>
               </tr>
               <tr>
-                <td>Short-sequence speed</td>
-                <td>1.22x–1.41x over the unfused reference path</td>
-                <td>Showed that fusion could translate into real runtime wins in the right regime, not only lower bandwidth.</td>
+                <td>HBM reads</td>
+                <td>11–55% reduction from fusion, with a peak measured cut of 54.6%</td>
+                <td>Supported the original hypothesis that repeated global-memory movement was a real cost worth chasing.</td>
               </tr>
               <tr>
-                <td>Peak allocation</td>
-                <td>85–91% lower peak GPU memory allocation</td>
-                <td>Made the kernel behavior more practical to reason about beyond raw runtime alone.</td>
+                <td>Hybrid bf16 path</td>
+                <td>About 50% lower HBM reads and 85–91% lower peak GPU allocation</td>
+                <td>Made the best-performing custom path clearly better on memory behavior, not just latency in one case.</td>
               </tr>
               <tr>
-                <td>Profiler signal</td>
-                <td>Remaining scalar fp32 projection loops became the next visible bottleneck</td>
-                <td>Kept the project honest about why bandwidth savings did not automatically solve the whole problem.</td>
+                <td>Environment</td>
+                <td>H100 SXM5, 132 SMs, 3.35 TB/s HBM bandwidth</td>
+                <td>Made it easier to interpret why the baseline was still far from purely HBM-bound at longer sequences.</td>
+              </tr>
+              <tr>
+                <td>Main bottleneck</td>
+                <td>Scalar fp32 projection loops in the fully fused path</td>
+                <td>Explained why lower memory traffic alone did not produce a faster kernel without a Tensor Core path.</td>
               </tr>
             </tbody>
           </table>
 
+          <h2>Benchmark crossover</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Sequence length</th>
+                <th>PyTorch baseline</th>
+                <th>Best custom kernel</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>64</td>
+                <td>107.2 µs</td>
+                <td>88.0 µs</td>
+                <td>1.22x faster</td>
+              </tr>
+              <tr>
+                <td>128</td>
+                <td>142.1 µs</td>
+                <td>100.5 µs</td>
+                <td>1.41x faster</td>
+              </tr>
+              <tr>
+                <td>256</td>
+                <td>127.2 µs</td>
+                <td>164.2 µs</td>
+                <td>0.77x</td>
+              </tr>
+              <tr>
+                <td>512</td>
+                <td>121.6 µs</td>
+                <td>293.3 µs</td>
+                <td>0.41x</td>
+              </tr>
+              <tr>
+                <td>1024</td>
+                <td>200.7 µs</td>
+                <td>556.4 µs</td>
+                <td>0.36x</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            That crossover mattered. It made the next step obvious: the memory story was partly right, but the
+            attention loop and projection arithmetic still needed a more hardware-efficient path. The WMMA prototype
+            made that concrete and pointed toward Tensor Core integration as the highest-priority follow-up.
+          </p>
+
           <blockquote>
-            The value of the project was not only the bandwidth reduction. It was learning how to reason clearly
-            about GPU bottlenecks once the profiler starts disagreeing with your first intuition.
+            The useful lesson from this project was not “fusion is always better.” It was learning exactly when lower
+            memory traffic stops being enough and the compute path becomes the real problem.
           </blockquote>
 
           <h2>Why it matters</h2>
           <p>
-            This is the strongest example on my site of the kind of work I want to keep doing: low-level, empirical,
-            and tied to real performance behavior rather than abstract interest in acceleration.
+            This is still the clearest example on my site of the kind of work I want to keep doing: systems work that
+            is measured carefully, honest about failure modes, and useful because it sharpens the next engineering
+            question instead of hiding it.
           </p>
         </article>
 
         <aside class="article-aside">
           <section class="article-panel">
             <h3>Proof</h3>
-            <p>11–55% HBM bandwidth reduction</p>
             <p>11 / 11 correctness tests passing</p>
-            <p>1.22x–1.41x speedup on the best short-sequence runs</p>
+            <p>1.41x speedup at N = 128</p>
+            <p>54.6% maximum HBM read reduction</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>My contribution</h3>
+            <ul>
+              <li>Tiling strategy and shared-memory design</li>
+              <li>HBM traffic model</li>
+              <li>NumPy oracle for correctness</li>
+              <li>WMMA benchmarking</li>
+            </ul>
           </section>
 
           <section class="article-panel">
             <h3>Environment</h3>
             <ul>
-              <li>H100 on Chameleon Cloud</li>
-              <li>CUDA C++</li>
-              <li>PyTorch references</li>
-              <li>NSight profiling</li>
+              <li>H100 SXM5 on Chameleon Cloud</li>
+              <li>132 SMs</li>
+              <li>3.35 TB/s HBM bandwidth</li>
+              <li>CUDA C++ and PyTorch</li>
             </ul>
           </section>
 

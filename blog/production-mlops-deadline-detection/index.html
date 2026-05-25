@@ -3,30 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru</title>
+    <title>Designing a reviewable deadline extraction pipeline for contracts | Bhanuja Karumuru</title>
     <meta
       name="description"
-      content="Notes on turning a contract deadline extraction model into a production-minded MLOps workflow with gating, review paths, and experiment tracking."
+      content="An MLOps write-up on turning contract deadline extraction into a staged, reviewable pipeline with gating, thresholds, and structured outputs."
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://bhanuu01.github.io/blog/production-mlops-deadline-detection/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru" />
-    <meta property="og:description" content="Notes on gating, review loops, and production behavior in an NLP workflow." />
+    <meta property="og:title" content="Designing a reviewable deadline extraction pipeline for contracts | Bhanuja Karumuru" />
+    <meta property="og:description" content="An MLOps write-up on gating, review loops, output contracts, and the infrastructure around an NLP workflow." />
     <meta property="og:url" content="https://bhanuu01.github.io/blog/production-mlops-deadline-detection/" />
     <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru" />
-    <meta name="twitter:description" content="Notes on gating, review loops, and production behavior in an NLP workflow." />
+    <meta name="twitter:title" content="Designing a reviewable deadline extraction pipeline for contracts | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="An MLOps write-up on gating, review loops, output contracts, and the infrastructure around an NLP workflow." />
     <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Lessons from turning a deadline extraction model into a production MLOps workflow",
+        "headline": "Designing a reviewable deadline extraction pipeline for contracts",
         "datePublished": "2026-05-10",
         "dateModified": "2026-05-10",
         "author": {
@@ -37,7 +37,7 @@
           "@type": "Person",
           "name": "Bhanuja Karumuru"
         },
-        "description": "Notes on turning a contract deadline extraction model into a production-minded MLOps workflow.",
+        "description": "An MLOps write-up on turning contract deadline extraction into a staged, reviewable pipeline with gating, thresholds, and structured outputs.",
         "url": "https://bhanuu01.github.io/blog/production-mlops-deadline-detection/"
       }
     </script>
@@ -73,47 +73,208 @@
         <article class="article">
           <header class="article-header">
             <p class="eyebrow">MLOps</p>
-            <h1>Lessons from turning a deadline extraction model into a production MLOps workflow</h1>
+            <h1>Designing a reviewable deadline extraction pipeline for contracts</h1>
             <p class="article-meta">May 10, 2026</p>
           </header>
 
           <p>
-            The Datanauts project became more interesting once it stopped being only a model and started becoming a
-            workflow. The engineering question shifted from model quality alone to something more practical: how do
-            you make the output reviewable, reproducible, and usable downstream?
+            The Datanauts project became more interesting once it stopped being just a model and started becoming a
+            workflow. The real systems question was not only whether the classifier and NER model worked. It was
+            whether the output could be reviewed, routed, and trusted by something downstream.
+          </p>
+          <p class="lead-note">
+            The useful shift here was from “can the model predict the right span?” to “what should the pipeline emit
+            when the answer is incomplete, low-confidence, or still needs a human to look at it?”
+          </p>
+
+          <h2>The problem setup</h2>
+          <p>
+            Contract language is messy in two different ways. First, not every clause that contains a date is actually
+            a deadline or renewal event. Second, even relevant clauses often mix multiple time references, notice
+            periods, and obligations. That made a single all-purpose extraction step harder to trust than a staged
+            pipeline.
           </p>
 
           <h2>Why the system needed stages</h2>
           <p>
-            Contract language is messy in ways that make naive extraction unreliable. A gating classifier was useful
-            because it separated “is this clause even relevant?” from “which exact span should be extracted?” That
-            boundary reduced noise and made the full pipeline easier to reason about.
+            The first model acted as a gate: is this clause relevant enough to spend extraction effort on at all?
+            Only then did the NER stage try to identify the exact spans. That boundary turned out to be useful because
+            it separated clause relevance from span precision and made the errors easier to reason about.
           </p>
+          <figure class="mini-figure">
+            <p class="diagram-label">Pipeline diagram</p>
+            <div class="flow-strip">
+              <div class="flow-node">
+                <strong>Input</strong>
+                <span>contract clause or document fragment</span>
+                <span>normalize and prepare text for inference</span>
+              </div>
+              <div class="flow-node">
+                <strong>Gate classifier</strong>
+                <span>decide whether the clause is relevant enough to continue</span>
+                <span>reduce noisy extraction attempts</span>
+              </div>
+              <div class="flow-node">
+                <strong>NER stage</strong>
+                <span>extract notice periods, deadlines, and renewal-related spans</span>
+              </div>
+              <div class="flow-node flow-node-accent">
+                <strong>Routing layer</strong>
+                <span>emit structured JSON</span>
+                <span>send low-confidence cases into review</span>
+              </div>
+            </div>
+            <p class="figure-caption">
+              The important system choice was not just stacking models. It was deciding where the review boundary
+              should live and what the output contract should look like on either side of it.
+            </p>
+          </figure>
 
           <h2>What made it usable</h2>
           <p>
-            MLflow tracking, artifact management, confidence thresholds, and review paths mattered as much as the
-            model choice. Once a system is expected to support a real workflow, the surrounding structure determines
-            whether the output is actually usable.
+            The workflow became more useful once the infrastructure around the models became explicit. MLflow tracked
+            experiments and artifacts for the classifier and NER stages. Docker packaging kept the inference path more
+            reproducible. Confidence thresholds gave the pipeline a way to acknowledge uncertainty without pretending it
+            was solved.
           </p>
 
-          <h2>What I would improve next</h2>
+          <h2>The output contract</h2>
           <p>
-            The main missing piece is stronger monitoring for drift. The offline metrics were good, but production
-            confidence should not depend only on those metrics. A better version would make distribution change more
-            visible over time.
+            The most important design decision was to make the output structured enough that downstream code could use
+            it and a reviewer could still understand what happened. A useful output needed relevance, event type,
+            extracted spans, confidence, and a clear flag for whether review was still required.
           </p>
+          <pre data-code-label="Structured output contract"><code>{
+  "clause_text": "Either party may terminate this agreement by giving at least 30 days' written notice prior to renewal.",
+  "is_relevant": true,
+  "document_event_type": "notice_deadline",
+  "entities": [
+    {
+      "text": "at least 30 days' written notice",
+      "label": "NOTICE_PERIOD"
+    }
+  ],
+  "review_required": false,
+  "confidence": {
+    "classifier": 0.93,
+    "ner": 0.88
+  }
+}</code></pre>
+          <p>
+            That same shape still worked when confidence dropped. The system could emit the same contract with
+            <code>review_required</code> switched to <code>true</code>, which made borderline cases easier to route to
+            a human instead of pretending every answer deserved the same trust.
+          </p>
+
+          <h2>What the numbers said</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Signal</th>
+                <th>Observed result</th>
+                <th>Why it mattered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RoBERTa gate</td>
+                <td>F1 = 0.8682</td>
+                <td>The gate was good enough to reduce noisy extraction attempts without collapsing the pipeline into a single model.</td>
+              </tr>
+              <tr>
+                <td>BERT NER</td>
+                <td>F1 = 1.0 on the curated evaluation split</td>
+                <td>The extraction stage performed strongly on the project split, but the staged system design still mattered more than the headline number alone.</td>
+              </tr>
+              <tr>
+                <td>Operational behavior</td>
+                <td>structured outputs plus review routing</td>
+                <td>The pipeline became usable because low-confidence predictions had somewhere honest to go.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>What I tried to avoid</h2>
+          <p>
+            A tempting version of this project would have been to collapse relevance, extraction, and output formatting
+            into one bigger model step. That would have made the architecture look simpler while making failures harder
+            to diagnose. Keeping the stages explicit gave the workflow better failure boundaries and made evaluation
+            easier.
+          </p>
+
+          <h2>What still felt weak</h2>
+          <p>
+            The missing piece is still better production-facing monitoring for drift and boundary cases. Good offline
+            metrics are useful, but they are not enough on their own. A stronger version of this system would make
+            distribution change and review volume visible over time instead of depending mostly on offline confidence.
+          </p>
+
+          <h2>Transferable principle</h2>
+          <blockquote>
+            In extraction systems, “usable” usually comes from the output contract and the review boundary, not just
+            from the best model number on the page.
+          </blockquote>
         </article>
 
         <aside class="article-aside">
           <section class="article-panel">
-            <h3>Related project</h3>
+            <h3>Proof</h3>
+            <p>RoBERTa gate F1 = 0.8682</p>
+            <p>BERT NER F1 = 1.0 on the curated split</p>
+            <p>Low-confidence cases routed into review</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Stack</h3>
+            <p>RoBERTa classifier</p>
+            <p>BERT NER</p>
+            <p>MLflow</p>
+            <p>Docker</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Related path</h3>
             <div class="button-row">
               <a class="button" href="/projects/deadline-detection-system/">Case study</a>
+              <a class="button-secondary" href="/projects/">Project overview</a>
             </div>
           </section>
         </aside>
       </div>
+
+      <section class="post-links" aria-label="Related reading">
+        <div class="post-links-grid">
+          <a class="post-link-card" href="/projects/deadline-detection-system/">
+            <span class="post-link-label">Related project</span>
+            <span class="post-link-title">Deadline Detection System case study</span>
+            <span class="post-link-note">The fuller project page with the pipeline context, evaluation notes, and static proof artifacts.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">roberta</span>
+              <span class="post-link-tag">bert ner</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/projects/">
+            <span class="post-link-label">Project context</span>
+            <span class="post-link-title">Selected ML systems projects</span>
+            <span class="post-link-note">Where this workflow sits alongside CUDA, retrieval, and deployment-focused work.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">ml systems</span>
+              <span class="post-link-tag">deployment</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/blog/cuda-transformer-inference-notes/">
+            <span class="post-link-label">Next writing</span>
+            <span class="post-link-title">Profiling a fused attention kernel on H100</span>
+            <span class="post-link-note">A systems note on profiler evidence, shared-memory tiling, and where the next bottleneck showed up.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">cuda</span>
+              <span class="post-link-tag">profiling</span>
+            </span>
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">

@@ -88,6 +88,11 @@
             usually the data. The speech is variable, the labels are limited, and augmentation choices can help or
             hurt depending on how well they preserve the structure of the original signal.
           </p>
+          <p class="lead-note">
+            This was the research thread that made me much more careful about low-resource ML. In this setting,
+            dataset structure, augmentation quality, and speaker variability can matter more than swapping one model
+            for another.
+          </p>
 
           <h2>Why this is hard</h2>
           <p>
@@ -103,11 +108,18 @@
             look richer while quietly distorting the very patterns the model needs to learn.
           </p>
 
-          <h2>What stayed with me</h2>
+          <h2>What this changed for me</h2>
           <p>
-            What stayed with me from this work is that good results in speech usually start with respecting what the
-            data can honestly support. Model choice matters, but not as much as understanding the structure and limits
-            of the data you have.
+            The useful lesson from this work was that speech models can look better for the wrong reason if the data
+            pipeline is not being treated as part of the modeling decision. That made me think much more seriously
+            about how to choose augmentations, how to interpret low-resource gains, and how to separate signal from
+            artifacts that come from the dataset itself.
+          </p>
+
+          <h2>Transferable principle</h2>
+          <p>
+            In small speech datasets, the first question is often not “which model is stronger?” It is “what does the
+            data actually let me claim?”
           </p>
         </article>
 
@@ -120,6 +132,40 @@
           </section>
         </aside>
       </div>
+
+      <section class="post-links" aria-label="Related reading">
+        <div class="post-links-grid">
+          <a class="post-link-card" href="/publications/">
+            <span class="post-link-label">Related publication</span>
+            <span class="post-link-title">Speech and dysarthria publications</span>
+            <span class="post-link-note">The conference and journal work that this post grows out of.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">speech</span>
+              <span class="post-link-tag">research</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/about/">
+            <span class="post-link-label">Background</span>
+            <span class="post-link-title">How the research started</span>
+            <span class="post-link-note">The longer personal context behind the speech-processing work at NIT Sikkim.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">research path</span>
+              <span class="post-link-tag">signal processing</span>
+            </span>
+          </a>
+
+          <a class="post-link-card" href="/blog/production-mlops-deadline-detection/">
+            <span class="post-link-label">Next writing</span>
+            <span class="post-link-title">Designing a reviewable deadline extraction pipeline</span>
+            <span class="post-link-note">A later systems-oriented post on ML workflows, output contracts, and review boundaries.</span>
+            <span class="post-link-tags">
+              <span class="post-link-tag">mlops</span>
+              <span class="post-link-tag">pipeline</span>
+            </span>
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">

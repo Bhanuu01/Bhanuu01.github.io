@@ -73,16 +73,15 @@
             <div class="work-kicker">Flagship case study</div>
             <h2 class="project-name"><a href="/projects/fused-linear-attention/">Fused Linear Attention</a></h2>
             <p>
-              A CUDA project built around a systems question rather than a benchmark alone: how much overhead
-              can be removed from transformer inference when projection and attention are fused into a tighter
-              execution path?
+              A CUDA project built around a systems question rather than a benchmark alone: what really changes
+              when projection and attention are fused, split, and benchmarked as a three-kernel family on H100?
             </p>
             <p>
-              The work focused on shared-memory layout, tiling strategy, and profiler-guided reasoning about
-              where HBM traffic was actually being spent. That made it less of a pure optimization exercise
-              and more of a careful systems study of what the kernel was doing on H100 hardware.
+              The work focused on shared-memory layout, tiling strategy, correctness oracles, and profiler-guided
+              reasoning about where HBM traffic stopped being the whole story. The best custom path ended up being
+              a hybrid warp-cooperative bf16 variant rather than the most aggressively fused scalar kernel.
             </p>
-            <div class="entry-callout">11–55% HBM bandwidth reduction on H100, with correctness validated across all test cases.</div>
+            <div class="entry-callout">11 / 11 correctness tests passed, HBM reads fell by up to 54.6%, and the best custom path reached 1.41x speedup at N = 128.</div>
             <div class="tags">
               <span class="metric-pill">1.22x–1.41x speedup</span>
               <span class="metric-pill muted">85–91% lower peak allocation</span>
