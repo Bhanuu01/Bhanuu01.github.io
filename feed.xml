@@ -9,6 +9,13 @@
     <name>Bhanuja Karumuru</name>
   </author>
   <entry>
+    <title>Why dysarthric speech classification is mostly a data problem</title>
+    <link href="https://bhanuu01.github.io/blog/dysarthric-speech-classification-notes/" />
+    <id>https://bhanuu01.github.io/blog/dysarthric-speech-classification-notes/</id>
+    <updated>2026-05-24T00:00:00Z</updated>
+    <summary>A short note on dysarthric speech, low-resource labels, and why augmentation choices matter in severity classification.</summary>
+  </entry>
+  <entry>
     <title>What I learned from redesigning backend APIs to reduce P99 latency</title>
     <link href="https://bhanuu01.github.io/blog/backend-p99-latency-reduction/" />
     <id>https://bhanuu01.github.io/blog/backend-p99-latency-reduction/</id>

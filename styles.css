@@ -947,6 +947,11 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .page-hero .hero-side {
+    order: -1;
+    width: min(100%, 304px);
+  }
+
   .page-side,
   .article-aside {
     order: -1;

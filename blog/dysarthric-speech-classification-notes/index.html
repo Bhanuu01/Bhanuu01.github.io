@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Why dysarthric speech classification is mostly a data problem | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Notes on dysarthric speech classification, low-resource labels, and why data augmentation choices matter so much in this setting."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanuu01.github.io/blog/dysarthric-speech-classification-notes/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Why dysarthric speech classification is mostly a data problem | Bhanuja Karumuru" />
+    <meta
+      property="og:description"
+      content="Notes on dysarthric speech classification, low-resource labels, and why data augmentation choices matter."
+    />
+    <meta property="og:url" content="https://bhanuu01.github.io/blog/dysarthric-speech-classification-notes/" />
+    <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why dysarthric speech classification is mostly a data problem | Bhanuja Karumuru" />
+    <meta
+      name="twitter:description"
+      content="Notes on dysarthric speech classification, low-resource labels, and why data augmentation choices matter."
+    />
+    <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why dysarthric speech classification is mostly a data problem",
+        "datePublished": "2026-05-24",
+        "dateModified": "2026-05-24",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "description": "Notes on dysarthric speech classification, low-resource labels, and why data augmentation choices matter so much in this setting.",
+        "url": "https://bhanuu01.github.io/blog/dysarthric-speech-classification-notes/"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/" aria-current="page">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/blog/">← Back to writing</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">Speech and signal processing</p>
+            <h1>Why dysarthric speech classification is mostly a data problem</h1>
+            <p class="article-meta">May 24, 2026</p>
+          </header>
+
+          <p>
+            Dysarthric speech classification sounds straightforward when it is described at a high level: take speech,
+            extract features, train a model, predict severity. In practice, the hard part is usually the data. The
+            speech is variable, labels are limited, and augmentation choices can help or hurt depending on how closely
+            they respect the structure of the original signal.
+          </p>
+
+          <h2>Why the task is difficult</h2>
+          <p>
+            Dysarthria affects articulation in ways that are clinically meaningful but not always easy to separate with
+            small datasets. A classifier can overfit to speaker-specific quirks or recording conditions long before it
+            learns something useful about severity.
+          </p>
+
+          <h2>Why augmentation matters so much</h2>
+          <p>
+            In low-resource settings, augmentation is not just a way to make the dataset larger. It changes the shape
+            of the problem. Some transformations preserve the parts of the signal that matter; others make the data
+            look richer while quietly distorting the very patterns the model needs to learn.
+          </p>
+
+          <h2>What stayed with me from the work</h2>
+          <p>
+            The most useful lesson from this line of research is that good results in speech often come from respecting
+            the data first. Model choice matters, but not as much as understanding what the data can honestly support.
+            That instinct has stayed with me even as my work has moved further into systems and infrastructure.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Related page</h3>
+            <div class="button-row">
+              <a class="button" href="/publications/">Publications</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="/contact/">Contact</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>
