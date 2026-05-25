@@ -96,6 +96,10 @@
             the background work, and return a stable response instead of trying to finish everything synchronously.
             That reduced contention on the request path and made retries and failure handling cleaner too.
           </p>
+          <p>
+            In practice, the work that moved off the request path included slower campaign-generation and follow-up
+            automation tasks that did not need to block the user-facing response.
+          </p>
 
           <h2>What stayed with me</h2>
           <p>

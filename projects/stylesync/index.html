@@ -88,11 +88,57 @@
             retrieval, indexing, and a serving path that could respond predictably.
           </p>
 
+          <h2>System shape</h2>
+          <p>
+            The project was extended into a two-tower retrieval pipeline built with TensorFlow Recommenders. User and
+            item embeddings were learned from interaction data, indexed with FAISS for approximate nearest-neighbor
+            lookup, and served through containerized FastAPI endpoints. That changed the work from a quick demo into
+            a retrieval problem with real indexing and serving decisions.
+          </p>
+
+          <h2>Evaluation snapshot</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>What I used</th>
+                <th>Public proof on the site</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Retrieval model</td>
+                <td>Two-tower recommender built with TensorFlow Recommenders</td>
+                <td>Moved the project beyond a browser-only prototype into a trainable retrieval setup.</td>
+              </tr>
+              <tr>
+                <td>Indexing</td>
+                <td>FAISS ANN index for item lookup</td>
+                <td>Turned embeddings into fast nearest-neighbor search rather than one-off similarity checks.</td>
+              </tr>
+              <tr>
+                <td>Serving</td>
+                <td>Containerized FastAPI services</td>
+                <td>Gave the project a stable backend path instead of keeping it as a front-end demo.</td>
+              </tr>
+              <tr>
+                <td>Latency</td>
+                <td>Sub-100 ms end-to-end inference latency</td>
+                <td>Shows the system was designed to feel responsive, not only technically correct.</td>
+              </tr>
+              <tr>
+                <td>Operations</td>
+                <td>Offline training pipeline, model versioning, and health checks</td>
+                <td>Made the recommender easier to retrain and reason about over time.</td>
+              </tr>
+            </tbody>
+          </table>
+
           <h2>What changed after the hackathon</h2>
           <p>
-            The project was extended into a two-tower retrieval pipeline with FAISS indexing and FastAPI-based
-            serving. That changed the work from “AI-flavored concept” into a more systems-aware recommendation
-            problem: what gets indexed, how lookups are structured, and what interface the backend should expose.
+            The part that mattered most after the hackathon was deciding what deserved to survive. The browser
+            interaction idea stayed, but the project became more serious once the retrieval model, FAISS index, and
+            serving layer were explicit parts of the design.
           </p>
 
           <h2>Why it matters</h2>
@@ -107,11 +153,18 @@
           <section class="article-panel">
             <h3>Core stack</h3>
             <ul>
+              <li>TensorFlow Recommenders</li>
               <li>FAISS indexing</li>
               <li>FastAPI serving</li>
               <li>Image retrieval</li>
               <li>Python</li>
             </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>Two-tower retrieval pipeline</p>
+            <p>Sub-100 ms end-to-end inference latency</p>
           </section>
 
           <section class="article-panel">

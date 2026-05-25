@@ -96,6 +96,13 @@
             instead of treating bandwidth wins as the entire story.
           </p>
 
+          <h2>Concrete numbers I kept coming back to</h2>
+          <p>
+            The strongest runs reduced HBM traffic by as much as 54.6%, reached 1.22x–1.41x speedup on the best
+            short-sequence cases, and cut peak GPU allocation by 85–91%. Those numbers were useful because they showed
+            the memory story was real even when end-to-end gains were not uniform across every case.
+          </p>
+
           <blockquote>
             Kernel fusion taught me something more useful than a single optimization trick: how to ask better
             performance questions in the first place.
@@ -110,6 +117,13 @@
         </article>
 
         <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Snapshot</h3>
+            <p>HBM traffic down by up to 54.6%.</p>
+            <p>1.22x–1.41x speedup on the strongest short-sequence runs.</p>
+            <p>85–91% lower peak GPU allocation.</p>
+          </section>
+
           <section class="article-panel">
             <h3>Related project</h3>
             <div class="button-row">

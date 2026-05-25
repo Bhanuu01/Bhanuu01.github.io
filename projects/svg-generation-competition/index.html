@@ -98,6 +98,44 @@
             experiment, inspect failure modes, tighten the checks, and repeat.
           </p>
 
+          <h2>Training and validation loop</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Part of the workflow</th>
+                <th>What I did</th>
+                <th>Why it mattered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base model</td>
+                <td>Qwen2.5-Coder-3B-Instruct</td>
+                <td>The model was already good at structured syntax, which made it a reasonable base for SVG output.</td>
+              </tr>
+              <tr>
+                <td>Fine-tuning</td>
+                <td>LoRA-based adaptation</td>
+                <td>Made it practical to iterate on a competition workflow without training a large model from scratch.</td>
+              </tr>
+              <tr>
+                <td>Validation</td>
+                <td>SVG and XML checks after generation</td>
+                <td>Separated visually plausible output from output that actually satisfied the format contract.</td>
+              </tr>
+              <tr>
+                <td>Repair</td>
+                <td>Retry and repair logic for malformed responses</td>
+                <td>Handled formatting fragility explicitly instead of pretending the model alone solved it.</td>
+              </tr>
+              <tr>
+                <td>Iteration</td>
+                <td>22 tracked experiments</td>
+                <td>Made failure modes easier to compare instead of relying on one-off impressions.</td>
+              </tr>
+            </tbody>
+          </table>
+
           <h2>Experimentation</h2>
           <p>
             In total I ran 22 experiments. The value of that process was not only the final score, but the clearer
@@ -105,11 +143,18 @@
             handled by post-generation validation.
           </p>
 
+          <h2>What the score meant</h2>
+          <p>
+            The best run reached an approximate competition score of 0.938. I treat that number as useful but not
+            magical. The stronger result was learning which improvements came from model changes, which came from
+            decoding choices, and which were better solved by validation and repair around the model.
+          </p>
+
           <h2>Outcome</h2>
           <p>
-            The best run reached an approximate score of 0.938. More importantly, the workflow taught me how to treat
-            structured generation as a systems problem: define the contract, validate the output, and keep the loop
-            honest with repeated measurement.
+            This project taught me to treat structured generation as a systems problem: define the contract, validate
+            the output, and keep the loop honest with repeated measurement. That is the same instinct I carry into
+            backend and ML systems work elsewhere on the site.
           </p>
         </article>
 
@@ -118,6 +163,7 @@
             <h3>Proof</h3>
             <p>22 experiments</p>
             <p>Best score approximately 0.938</p>
+            <p>LoRA fine-tuning with validation and repair in the loop</p>
           </section>
 
           <section class="article-panel">

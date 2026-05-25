@@ -98,6 +98,14 @@
             MLflow.
           </p>
 
+          <h2>Evaluation context</h2>
+          <p>
+            The model metrics on this page are component-level results, not a claim that the full contract problem was
+            solved end to end. The BERT NER stage reached F1 = 1.0 on the curated evaluation split used for the
+            project, while the sentence-level RoBERTa gate reached F1 = 0.8682. The more important result was that
+            the staged setup made extraction behavior easier to reason about than a single all-purpose model.
+          </p>
+
           <h2>My contribution</h2>
           <p>
             This was a team project. My contribution centered on the staged pipeline design, the experiment-tracking
@@ -105,11 +113,46 @@
             document-processing flow.
           </p>
 
+          <h2>System behavior around the models</h2>
+          <p>
+            The pipeline was designed to sit inside a document workflow rather than in a notebook. It supported
+            asynchronous queueing, burst absorption, autoscaling to a second worker under sustained queue depth, and
+            monitoring around inference latency, event creation volume, and user corrections. That surrounding behavior
+            is what made the model outputs operational.
+          </p>
+
           <h2>Why this project matters</h2>
           <p>
             The part I value most here is not just model training. It is the end-to-end framing: deciding what the
             output contract should look like, designing for reviewable uncertainty, and shaping the work so it can fit
             into a document workflow rather than live as an isolated notebook.
+          </p>
+
+          <h2>Sample output</h2>
+          <p>
+            A useful version of this project needed a stable output contract. A simplified example of the structured
+            artifact is below.
+          </p>
+          <pre class="artifact-block"><code>{
+  "clause_text": "Either party may terminate this agreement by giving at least 30 days' written notice prior to renewal.",
+  "is_relevant": true,
+  "document_event_type": "notice_deadline",
+  "entities": [
+    {
+      "text": "at least 30 days' written notice",
+      "label": "NOTICE_PERIOD"
+    }
+  ],
+  "review_required": false,
+  "confidence": {
+    "classifier": 0.93,
+    "ner": 0.88
+  }
+}</code></pre>
+          <p>
+            When confidence fell below the routing threshold, the same output contract could still be generated with
+            <code>review_required</code> set to <code>true</code>, which made low-confidence cases easier to send into
+            a human-review loop.
           </p>
 
           <h2>Technical highlights</h2>
@@ -126,6 +169,7 @@
             <h3>Proof</h3>
             <p>BERT NER F1 = 1.0</p>
             <p>RoBERTa classifier F1 = 0.8682</p>
+            <p>Async queue with autoscaling support for burst traffic</p>
           </section>
 
           <section class="article-panel">
@@ -136,6 +180,7 @@
               <li>BERT NER</li>
               <li>MLflow</li>
               <li>Docker</li>
+              <li>Paperless-ngx integration</li>
             </ul>
           </section>
 

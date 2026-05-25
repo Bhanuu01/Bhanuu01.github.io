@@ -97,12 +97,69 @@
             NSight-based profiling to track where time and bandwidth were actually going.
           </p>
 
+          <h2>Memory path sketch</h2>
+          <div class="mini-figure">
+            <div class="flow-strip">
+              <div class="flow-node">
+                <strong>Standard path</strong>
+                <span>QKV projection</span>
+                <span>write intermediate tensors to HBM</span>
+                <span>run attention as a separate stage</span>
+              </div>
+              <div class="flow-node flow-node-accent">
+                <strong>Fused path</strong>
+                <span>keep projection and attention closer together</span>
+                <span>cut repeated HBM writes and reads</span>
+                <span>profile what bottleneck remains after fusion</span>
+              </div>
+            </div>
+          </div>
+
           <h2>What the numbers said</h2>
           <p>
-            The implementation reduced HBM bandwidth by 11–55% depending on sequence length. That result mattered
-            because it confirmed the systems hypothesis. At the same time, wall-clock performance still pointed to
-            the next bottleneck: scalar fp32 projection loops, which leave Tensor Core throughput on the table.
+            The implementation reduced HBM bandwidth by 11–55% depending on sequence length. On the best short-sequence
+            runs, the fused path reached 1.22x–1.41x speedup over the reference path and reduced peak GPU allocation
+            by 85–91%. The gains were real, but not uniform. Once the bandwidth cost came down, the profiler still
+            pointed to scalar fp32 projection loops as the next limiter.
           </p>
+
+          <h2>Numbers</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Result</th>
+                <th>Why it mattered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Correctness</td>
+                <td>11 / 11 tests passed, max absolute error ≤ 1.5 × 10<sup>-7</sup></td>
+                <td>Confirmed that the fused kernel matched the PyTorch reference path closely enough to trust profiling.</td>
+              </tr>
+              <tr>
+                <td>HBM traffic</td>
+                <td>11–55% reduction, with the strongest measured cut around 54.6%</td>
+                <td>Supported the original hypothesis that repeated global-memory movement was a real cost.</td>
+              </tr>
+              <tr>
+                <td>Short-sequence speed</td>
+                <td>1.22x–1.41x over the unfused reference path</td>
+                <td>Showed that fusion could translate into real runtime wins in the right regime, not only lower bandwidth.</td>
+              </tr>
+              <tr>
+                <td>Peak allocation</td>
+                <td>85–91% lower peak GPU memory allocation</td>
+                <td>Made the kernel behavior more practical to reason about beyond raw runtime alone.</td>
+              </tr>
+              <tr>
+                <td>Profiler signal</td>
+                <td>Remaining scalar fp32 projection loops became the next visible bottleneck</td>
+                <td>Kept the project honest about why bandwidth savings did not automatically solve the whole problem.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <blockquote>
             The value of the project was not only the bandwidth reduction. It was learning how to reason clearly
@@ -121,6 +178,7 @@
             <h3>Proof</h3>
             <p>11–55% HBM bandwidth reduction</p>
             <p>11 / 11 correctness tests passing</p>
+            <p>1.22x–1.41x speedup on the best short-sequence runs</p>
           </section>
 
           <section class="article-panel">
