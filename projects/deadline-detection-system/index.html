@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deadline Detection System | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Case study on an intelligent deadline and expiry extraction workflow for contract text, built with staged NLP models and production-minded MLOps."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/projects/deadline-detection-system/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Deadline Detection System | Bhanuja Karumuru" />
+    <meta property="og:description" content="A staged RoBERTa-plus-BERT workflow for extracting deadlines, expiry dates, and renewal terms from contracts." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/projects/deadline-detection-system/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Deadline Detection System | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="A staged RoBERTa-plus-BERT workflow for extracting deadlines, expiry dates, and renewal terms from contracts." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Deadline Detection System",
+        "description": "An intelligent deadline and expiry extraction workflow for contract text.",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "url": "https://bhanujakarumuru.github.io/projects/deadline-detection-system/",
+        "codeRepository": "https://github.com/Bhanuu01/Datanauts-Intelligent-Deadline-Expiry-Detection",
+        "programmingLanguage": ["Python"],
+        "applicationCategory": "Machine Learning"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/" aria-current="page">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/projects/">← Back to projects</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">MLOps / NLP</p>
+            <h1>Deadline Detection System</h1>
+            <p class="hero-summary">An intelligent deadline and expiry extraction workflow for contract text.</p>
+            <p class="article-meta">Python · RoBERTa · BERT NER · MLflow · Docker</p>
+          </header>
+
+          <p>
+            This project started from a real operational need: extracting deadlines, expiration dates, and renewal
+            terms from contract text in a form that downstream systems could use instead of simply showing a result
+            to a human reviewer. That requirement pushed the project away from a single-model demo and toward a
+            workflow that behaves more like a real system.
+          </p>
+
+          <h2>Problem</h2>
+          <p>
+            Contract text often contains multiple dates, ambiguous language, and clauses that mix effective dates,
+            renewal periods, and notice deadlines. A single model was not enough. The system first had to decide
+            whether a clause was relevant, then extract the exact temporal span, and finally leave room for review
+            when model confidence was low.
+          </p>
+
+          <h2>What I built</h2>
+          <p>
+            The workflow uses a sentence-level RoBERTa classifier as a gate, followed by a BERT-based NER model for
+            exact span extraction. Around the models, I built the surrounding pieces that make the output operational:
+            dataset preparation, evaluation, review thresholds, structured JSON outputs, and experiment tracking with
+            MLflow.
+          </p>
+
+          <h2>Why this project matters</h2>
+          <p>
+            The part I value most here is not just model training. It is the end-to-end framing: deciding what the
+            output contract should look like, designing for reviewable uncertainty, and shaping the work so it can fit
+            into a document workflow rather than live as an isolated notebook.
+          </p>
+
+          <blockquote>
+            The strongest signal in this project is not “I trained a model.” It is “I designed the path from model
+            output to a system someone else could actually operate.”
+          </blockquote>
+
+          <h2>Technical highlights</h2>
+          <ul>
+            <li>Two-stage classifier plus NER pipeline to reduce false extraction from irrelevant text.</li>
+            <li>Structured outputs designed for downstream systems and human-review loops.</li>
+            <li>Confidence thresholds with low-confidence routing for feedback and retraining.</li>
+            <li>MLflow tracking and Docker packaging for reproducibility.</li>
+          </ul>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>BERT NER F1 = 1.0</p>
+            <p>RoBERTa classifier F1 = 0.8682</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Stack</h3>
+            <ul>
+              <li>Python</li>
+              <li>RoBERTa</li>
+              <li>BERT NER</li>
+              <li>MLflow</li>
+              <li>Docker</li>
+            </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Links</h3>
+            <div class="button-row">
+              <a class="button" href="https://github.com/Bhanuu01/Datanauts-Intelligent-Deadline-Expiry-Detection" target="_blank" rel="noreferrer">Repository ↗</a>
+              <a class="button-secondary" href="/blog/production-mlops-deadline-detection/">Related note</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

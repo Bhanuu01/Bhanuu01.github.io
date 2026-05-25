@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Technical writing by Bhanuja Karumuru on backend systems, MLOps, CUDA, and engineering decisions that carry into production."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/blog/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blog | Bhanuja Karumuru" />
+    <meta property="og:description" content="Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/blog/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Blog | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Blog | Bhanuja Karumuru",
+        "url": "https://bhanujakarumuru.github.io/blog/",
+        "description": "Technical writing on backend systems, MLOps, CUDA, and production-oriented engineering."
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/" aria-current="page">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <section class="section-block">
+        <p class="eyebrow">Writing</p>
+        <h1 class="page-title">Technical notes from the work behind the resume bullets.</h1>
+        <p class="page-summary">
+          I use writing to explain the engineering choices that matter after the headline metric: what changed,
+          how I reasoned about the tradeoff, and what I would do differently next time.
+        </p>
+      </section>
+
+      <section class="writing-list">
+        <article class="writing-card">
+          <div class="entry-topline">
+            <div>
+              <div class="entry-kicker">Backend engineering</div>
+              <h2 class="writing-title"><a href="/blog/backend-p99-latency-reduction/">What I learned from redesigning backend APIs to reduce P99 latency</a></h2>
+            </div>
+            <div class="entry-date">May 19, 2026</div>
+          </div>
+          <p>
+            A note on async task pipelines, latency as architecture rather than micro-optimization, and why the
+            request path should own less work than we often let it.
+          </p>
+        </article>
+
+        <article class="writing-card">
+          <div class="entry-topline">
+            <div>
+              <div class="entry-kicker">MLOps</div>
+              <h2 class="writing-title"><a href="/blog/production-mlops-deadline-detection/">Lessons from turning a deadline extraction model into a production MLOps workflow</a></h2>
+            </div>
+            <div class="entry-date">May 10, 2026</div>
+          </div>
+          <p>
+            A closer look at gating, experiment tracking, review paths, and why production behavior matters as much as
+            offline model quality.
+          </p>
+        </article>
+
+        <article class="writing-card">
+          <div class="entry-topline">
+            <div>
+              <div class="entry-kicker">CUDA and systems</div>
+              <h2 class="writing-title"><a href="/blog/cuda-transformer-inference-notes/">CUDA notes on transformer inference, memory bandwidth, and kernel fusion</a></h2>
+            </div>
+            <div class="entry-date">Apr 28, 2026</div>
+          </div>
+          <p>
+            Practical notes from profiling fused attention kernels, reasoning about HBM traffic, and learning to trust
+            measurement more than intuition.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

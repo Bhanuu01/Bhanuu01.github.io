@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="A note on redesigning synchronous backend workflows into async task pipelines to improve throughput and reduce tail latency."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/blog/backend-p99-latency-reduction/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru" />
+    <meta property="og:description" content="A note on async task pipelines, throughput, and why tail latency is often an architecture problem." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/blog/backend-p99-latency-reduction/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What I learned from redesigning backend APIs to reduce P99 latency | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="A note on async task pipelines, throughput, and why tail latency is often an architecture problem." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What I learned from redesigning backend APIs to reduce P99 latency",
+        "datePublished": "2026-05-19",
+        "dateModified": "2026-05-19",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "description": "A note on redesigning synchronous backend workflows into async task pipelines to improve throughput and reduce tail latency.",
+        "url": "https://bhanujakarumuru.github.io/blog/backend-p99-latency-reduction/"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/" aria-current="page">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/blog/">← Back to writing</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">Backend engineering</p>
+            <h1>What I learned from redesigning backend APIs to reduce P99 latency</h1>
+            <p class="article-meta">May 19, 2026 · 5 min read</p>
+          </header>
+
+          <p>
+            Average latency often hides the user experience that actually gets shipped. Tail latency is what shows up
+            when a system is stressed, and in many backend systems the real problem is not one slow line of code but
+            a design that forces the request path to own too much synchronous work.
+          </p>
+
+          <h2>Where the pain was coming from</h2>
+          <p>
+            At SalesUp, some API flows were handling work inline that did not need to happen before the response
+            returned. That design made request paths heavier than they needed to be and caused slow operations to
+            compete directly with interactive traffic.
+          </p>
+
+          <h2>What changed</h2>
+          <p>
+            The most important shift was architectural, not syntactic. The API moved closer to a coordinator model:
+            validate the request, persist the right state, queue the background work, and return a stable contract
+            quickly instead of trying to finish everything synchronously.
+          </p>
+
+          <blockquote>
+            The point of async work is not that it sounds modern. The point is that some responsibilities should not
+            live on the request path at all.
+          </blockquote>
+
+          <p>
+            That redesign improved system throughput and reduced P99 latency because long-running operations stopped
+            competing directly with the traffic that needed fast responses. It also created cleaner retry boundaries
+            and made failure handling easier to reason about.
+          </p>
+
+          <h2>What stayed with me</h2>
+          <p>
+            The most useful lesson was that latency tuning is often a question of systems boundaries, not just local
+            optimization. That perspective still shapes how I think about ML pipelines and infrastructure today.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>Throughput increased by 40%.</p>
+            <p>P99 latency dropped by 25%.</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Related pages</h3>
+            <div class="button-row">
+              <a class="button-secondary" href="/experience/">Experience</a>
+              <a class="button-secondary" href="/cv/">CV</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

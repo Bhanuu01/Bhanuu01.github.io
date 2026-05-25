@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fused Linear Attention | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Case study on fused linear attention, CUDA kernel design, memory bandwidth, and transformer inference optimization."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/projects/fused-linear-attention/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Fused Linear Attention | Bhanuja Karumuru" />
+    <meta property="og:description" content="CUDA kernel design and transformer inference optimization case study." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/projects/fused-linear-attention/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fused Linear Attention | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="CUDA kernel design and transformer inference optimization case study." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Fused Linear Attention",
+        "description": "Case study on fused QKV projection and attention for transformer inference efficiency.",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "url": "https://bhanujakarumuru.github.io/projects/fused-linear-attention/",
+        "programmingLanguage": ["CUDA", "Python"],
+        "applicationCategory": "Machine Learning Systems"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/" aria-current="page">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/projects/">← Back to projects</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">CUDA / ML systems</p>
+            <h1>Fused Linear Attention</h1>
+            <p class="hero-summary">A hardware-aware attempt to reduce transformer inference overhead at the kernel level.</p>
+            <p class="article-meta">CUDA C++ · PyTorch · NSight · H100</p>
+          </header>
+
+          <p>
+            This project came from a systems question rather than a benchmark alone: what happens when QKV projection
+            and attention are forced into a tighter CUDA execution path so intermediate data moves less through HBM?
+            That framing made the project useful to me even before the final numbers were in, because it required
+            thinking about bottlenecks through measurement instead of intuition.
+          </p>
+
+          <h2>Problem</h2>
+          <p>
+            Standard inference paths split projection and attention into separate stages. Each stage writes
+            intermediate tensors back to HBM and then reads them again. On modern accelerators, that traffic can
+            become the real constraint long before arithmetic throughput is exhausted.
+          </p>
+
+          <h2>Approach</h2>
+          <p>
+            I designed a fused execution strategy that combines QKV projection and scaled dot-product attention into
+            a single kernel path, then validated correctness against PyTorch references across multiple sequence
+            lengths. The work also included T=64 tiling decisions, shared-memory padding to avoid bank conflicts, and
+            NSight-based profiling to track where time and bandwidth were actually going.
+          </p>
+
+          <h2>What the numbers said</h2>
+          <p>
+            The implementation reduced HBM bandwidth by 11–55% depending on sequence length. That result mattered
+            because it confirmed the systems hypothesis. At the same time, wall-clock performance still pointed to
+            the next bottleneck: scalar fp32 projection loops, which leave Tensor Core throughput on the table.
+          </p>
+
+          <blockquote>
+            The value of the project was not only the bandwidth reduction. It was learning how to reason clearly
+            about GPU bottlenecks once the profiler starts disagreeing with your first intuition.
+          </blockquote>
+
+          <h2>Why it matters</h2>
+          <p>
+            This is the strongest example on my site of the kind of work I want to keep doing: low-level, empirical,
+            and tied to real performance behavior rather than abstract interest in acceleration.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>11–55% HBM bandwidth reduction</p>
+            <p>11 / 11 correctness tests passing</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Environment</h3>
+            <ul>
+              <li>H100 on Chameleon Cloud</li>
+              <li>CUDA C++</li>
+              <li>PyTorch references</li>
+              <li>NSight profiling</li>
+            </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Related path</h3>
+            <div class="button-row">
+              <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">CUDA note</a>
+              <a class="button-secondary" href="/projects/">Project overview</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

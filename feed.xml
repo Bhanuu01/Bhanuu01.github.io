@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Bhanuja Karumuru — Writing</title>
+  <link href="https://bhanujakarumuru.github.io/feed.xml" rel="self" />
+  <link href="https://bhanujakarumuru.github.io/blog/" />
+  <updated>2026-05-24T00:00:00Z</updated>
+  <id>https://bhanujakarumuru.github.io/</id>
+  <author>
+    <name>Bhanuja Karumuru</name>
+  </author>
+  <entry>
+    <title>What I learned from redesigning backend APIs to reduce P99 latency</title>
+    <link href="https://bhanujakarumuru.github.io/blog/backend-p99-latency-reduction/" />
+    <id>https://bhanujakarumuru.github.io/blog/backend-p99-latency-reduction/</id>
+    <updated>2026-05-19T00:00:00Z</updated>
+    <summary>A note on async task pipelines, throughput, and why tail latency is often an architecture problem.</summary>
+  </entry>
+  <entry>
+    <title>Lessons from turning a deadline extraction model into a production MLOps workflow</title>
+    <link href="https://bhanujakarumuru.github.io/blog/production-mlops-deadline-detection/" />
+    <id>https://bhanujakarumuru.github.io/blog/production-mlops-deadline-detection/</id>
+    <updated>2026-05-10T00:00:00Z</updated>
+    <summary>Notes on gating, review loops, and production behavior in an NLP workflow.</summary>
+  </entry>
+  <entry>
+    <title>CUDA notes on transformer inference, memory bandwidth, and kernel fusion</title>
+    <link href="https://bhanujakarumuru.github.io/blog/cuda-transformer-inference-notes/" />
+    <id>https://bhanujakarumuru.github.io/blog/cuda-transformer-inference-notes/</id>
+    <updated>2026-04-28T00:00:00Z</updated>
+    <summary>Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me.</summary>
+  </entry>
+</feed>

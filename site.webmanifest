@@ -1,0 +1,15 @@
+{
+  "name": "Bhanuja Karumuru",
+  "short_name": "Bhanuja",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#16324f",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

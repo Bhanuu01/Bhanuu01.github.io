@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StyleSync | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Case study on StyleSync, a fashion recommendation system built from a hackathon idea into a retrieval and serving pipeline."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/projects/stylesync/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="StyleSync | Bhanuja Karumuru" />
+    <meta property="og:description" content="A recommendation system built from a hackathon prototype into a more complete retrieval pipeline." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/projects/stylesync/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="StyleSync | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="A recommendation system built from a hackathon prototype into a more complete retrieval pipeline." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "StyleSync",
+        "description": "A recommendation system built from a hackathon prototype into a more complete retrieval pipeline.",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "url": "https://bhanujakarumuru.github.io/projects/stylesync/",
+        "codeRepository": "https://github.com/Bhanuu01/StyleSync",
+        "programmingLanguage": ["Python"],
+        "applicationCategory": "Recommendation system"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/" aria-current="page">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/projects/">← Back to projects</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">Recommendation / retrieval</p>
+            <h1>StyleSync</h1>
+            <p class="hero-summary">A fashion recommendation system extended from a hackathon concept into a fuller retrieval pipeline.</p>
+            <p class="article-meta">FAISS · FastAPI · Python · Gemini API · computer vision</p>
+          </header>
+
+          <p>
+            StyleSync is interesting to me because it shows a different kind of engineering growth than the more
+            systems-heavy projects on this site. It began as a quick hackathon build called Mirror, then became a
+            more deliberate recommendation workflow once the underlying idea proved worth keeping.
+          </p>
+
+          <h2>Problem</h2>
+          <p>
+            The original question was simple: can a user look at an item on the web and quickly surface visually
+            similar alternatives? Solving that cleanly required more than a frontend demo. It needed embeddings,
+            retrieval, indexing, and a serving path that could respond predictably.
+          </p>
+
+          <h2>What changed after the hackathon</h2>
+          <p>
+            The project was extended into a two-tower retrieval pipeline with FAISS indexing and FastAPI-based
+            serving. That changed the work from “AI-flavored concept” into a more systems-aware recommendation
+            problem: what gets indexed, how lookups are structured, and what interface the backend should expose.
+          </p>
+
+          <h2>Why it matters</h2>
+          <p>
+            This project is useful proof that I can take a fast idea and decide whether it deserves a second life.
+            Not everything from a hackathon should become a full project, but when something does, the engineering
+            challenge becomes deciding what survives the jump.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Core stack</h3>
+            <ul>
+              <li>FAISS indexing</li>
+              <li>FastAPI serving</li>
+              <li>Image retrieval</li>
+              <li>Python</li>
+            </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Lineage</h3>
+            <p>Started as Mirror at the GDG NYC Hackathon and then evolved into a more durable recommendation system.</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Links</h3>
+            <div class="button-row">
+              <a class="button" href="https://github.com/Bhanuu01/StyleSync" target="_blank" rel="noreferrer">Repository ↗</a>
+              <a class="button-secondary" href="/hackathons/">Hackathon context</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

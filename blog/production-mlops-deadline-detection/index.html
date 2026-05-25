@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Notes on turning a contract deadline extraction model into a production-minded MLOps workflow with gating, review paths, and experiment tracking."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/blog/production-mlops-deadline-detection/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru" />
+    <meta property="og:description" content="Notes on gating, review loops, and production behavior in an NLP workflow." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/blog/production-mlops-deadline-detection/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lessons from turning a deadline extraction model into a production MLOps workflow | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="Notes on gating, review loops, and production behavior in an NLP workflow." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Lessons from turning a deadline extraction model into a production MLOps workflow",
+        "datePublished": "2026-05-10",
+        "dateModified": "2026-05-10",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "description": "Notes on turning a contract deadline extraction model into a production-minded MLOps workflow.",
+        "url": "https://bhanujakarumuru.github.io/blog/production-mlops-deadline-detection/"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/" aria-current="page">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/blog/">← Back to writing</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">MLOps</p>
+            <h1>Lessons from turning a deadline extraction model into a production MLOps workflow</h1>
+            <p class="article-meta">May 10, 2026 · 6 min read</p>
+          </header>
+
+          <p>
+            The Datanauts project became useful to me when it stopped being just a model and started becoming a
+            workflow. The modeling problem mattered, but the stronger engineering question was what happens when an
+            output has to be reviewable, reproducible, and shaped for downstream use.
+          </p>
+
+          <h2>Why the system needed stages</h2>
+          <p>
+            Contract language is messy in ways that make naive extraction unreliable. A gating classifier was useful
+            because it separated “is this clause even relevant?” from “which exact span should be extracted?” That
+            boundary reduced noise and made the full pipeline easier to reason about.
+          </p>
+
+          <h2>What made it feel more real</h2>
+          <p>
+            MLflow tracking, artifact management, confidence thresholds, and review paths mattered as much as the
+            model choice. Once a system is expected to support a real workflow, the surrounding structure determines
+            whether the output is actually usable.
+          </p>
+
+          <h2>What I would add next</h2>
+          <p>
+            The main missing piece is stronger monitoring for drift. The offline metrics were good, but production
+            confidence should not depend only on those metrics. A better version would make distribution change more
+            visible over time.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Related project</h3>
+            <div class="button-row">
+              <a class="button" href="/projects/deadline-detection-system/">Case study</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

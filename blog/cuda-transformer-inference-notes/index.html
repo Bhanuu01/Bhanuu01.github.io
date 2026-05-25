@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me about transformer inference."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanujakarumuru.github.io/blog/cuda-transformer-inference-notes/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru" />
+    <meta property="og:description" content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me." />
+    <meta property="og:url" content="https://bhanujakarumuru.github.io/blog/cuda-transformer-inference-notes/" />
+    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CUDA notes on transformer inference, memory bandwidth, and kernel fusion | Bhanuja Karumuru" />
+    <meta name="twitter:description" content="Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me." />
+    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "CUDA notes on transformer inference, memory bandwidth, and kernel fusion",
+        "datePublished": "2026-04-28",
+        "dateModified": "2026-04-28",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "description": "Notes on fused attention kernels, HBM bandwidth, and what CUDA profiling taught me about transformer inference.",
+        "url": "https://bhanujakarumuru.github.io/blog/cuda-transformer-inference-notes/"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/" aria-current="page">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/blog/">← Back to writing</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">CUDA / systems</p>
+            <h1>CUDA notes on transformer inference, memory bandwidth, and kernel fusion</h1>
+            <p class="article-meta">Apr 28, 2026 · 6 min read</p>
+          </header>
+
+          <p>
+            My strongest CUDA lesson so far is simple: if the profiler disagrees with your intuition, trust the
+            profiler. Transformer inference invites assumptions about compute, but in practice the path can become
+            bandwidth-bound much earlier than expected.
+          </p>
+
+          <h2>Why fused kernels mattered to me</h2>
+          <p>
+            Fusing projection and attention reduced intermediate writes and reads to HBM, which made the experiment
+            a useful way to reason about memory movement instead of only looking at arithmetic throughput.
+          </p>
+
+          <h2>What the profiler changed</h2>
+          <p>
+            NSight made it much easier to spot the gap between “we reduced bandwidth” and “we improved total runtime.”
+            The remaining scalar fp32 projection loops kept pointing to the next step: use Tensor Cores more effectively
+            instead of treating bandwidth wins as the entire story.
+          </p>
+
+          <blockquote>
+            Kernel fusion taught me something more useful than a single optimization trick: how to ask better
+            performance questions in the first place.
+          </blockquote>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Related project</h3>
+            <div class="button-row">
+              <a class="button" href="/projects/fused-linear-attention/">Case study</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>
