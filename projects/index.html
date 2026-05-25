@@ -10,24 +10,24 @@
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://bhanujakarumuru.github.io/projects/" />
+    <link rel="canonical" href="https://bhanuu01.github.io/projects/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Projects | Bhanuja Karumuru" />
     <meta property="og:description" content="Case studies across CUDA systems, MLOps, backend systems, and recommendation." />
-    <meta property="og:url" content="https://bhanujakarumuru.github.io/projects/" />
-    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta property="og:url" content="https://bhanuu01.github.io/projects/" />
+    <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Projects | Bhanuja Karumuru" />
     <meta name="twitter:description" content="Case studies across CUDA systems, MLOps, backend systems, and recommendation." />
-    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": "Projects | Bhanuja Karumuru",
-        "url": "https://bhanujakarumuru.github.io/projects/",
+        "url": "https://bhanuu01.github.io/projects/",
         "description": "Editorial project case studies from Bhanuja Karumuru."
       }
     </script>
@@ -43,13 +43,14 @@
         </button>
         <nav aria-label="Primary">
           <ul class="nav-links">
-            <li><a href="/">About</a></li>
+            <li><a href="/about/">About</a></li>
             <li><a href="/experience/">Experience</a></li>
             <li><a href="/projects/" aria-current="page">Projects</a></li>
             <li><a href="/hackathons/">Hackathons</a></li>
             <li><a href="/publications/">Publications</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/cv/">CV</a></li>
+                      <li><a href="/contact/">Contact</a></li>
           </ul>
         </nav>
       </div>
@@ -59,11 +60,11 @@
     <main class="site-shell">
       <section class="section-block">
         <p class="eyebrow">Selected work</p>
-        <h1 class="page-title">Projects as evidence, not just inventory.</h1>
+        <h1 class="page-title">Selected projects.</h1>
         <p class="page-summary">
-          I care most about projects that force a real engineering question: where is the bottleneck,
-          what is the contract, how is it measured, and what changes when the work leaves a notebook and
-          has to behave like a system.
+          I care most about projects that force a real engineering question: where is the bottleneck, what
+          should the system output look like, and what changes once the work has to behave reliably outside
+          a notebook.
         </p>
       </section>
 
@@ -83,6 +84,7 @@
             </div>
             <div class="button-row">
               <a class="button" href="/projects/fused-linear-attention/">Read case study</a>
+              <a class="button-secondary" href="https://github.com/Bhanuu01/FusedLinearAttention" target="_blank" rel="noreferrer">Repository ↗</a>
               <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">Related writing</a>
             </div>
           </article>
@@ -93,12 +95,20 @@
               <h3 class="project-name"><a href="/projects/deadline-detection-system/">Deadline Detection System</a></h3>
               <p>A staged RoBERTa-plus-BERT pipeline for extracting deadlines and renewal terms from contracts.</p>
               <div class="metric-pill">BERT NER F1 = 1.0</div>
+              <div class="button-row">
+                <a class="button-secondary" href="/projects/deadline-detection-system/">Case study</a>
+                <a class="button-secondary" href="https://github.com/Bhanuu01/Datanauts-Intelligent-Deadline-Expiry-Detection" target="_blank" rel="noreferrer">Repository ↗</a>
+              </div>
             </article>
             <article class="support-item">
               <div class="work-kicker">Retrieval and serving</div>
               <h3 class="project-name"><a href="/projects/stylesync/">StyleSync</a></h3>
               <p>Extended a hackathon build into a fuller recommender with FAISS, FastAPI, and image-based retrieval.</p>
               <div class="metric-pill muted">FAISS + FastAPI</div>
+              <div class="button-row">
+                <a class="button-secondary" href="/projects/stylesync/">Case study</a>
+                <a class="button-secondary" href="https://github.com/Bhanuu01/StyleSync" target="_blank" rel="noreferrer">Repository ↗</a>
+              </div>
             </article>
           </div>
         </div>
@@ -125,13 +135,16 @@
               A tooling workflow combining Verilator, Yosys, OpenSTA, and LLM-guided patches to reduce manual
               loop time in digital design verification and timing analysis.
             </p>
+            <div class="button-row">
+              <a class="button-secondary" href="/projects/rtl-optimization-loop/">Read case study</a>
+            </div>
           </article>
 
           <article class="entry-card">
             <div class="entry-topline">
               <div>
                 <div class="entry-kicker">Applied generative systems</div>
-                <h3 class="entry-title">SVG Generation Competition Workflow</h3>
+                <h3 class="entry-title"><a href="/projects/svg-generation-competition/">SVG Generation Competition Workflow</a></h3>
               </div>
               <div class="entry-date">LLM fine-tuning</div>
             </div>
@@ -140,6 +153,9 @@
               repair logic, and response validation over 22 experiments.
             </p>
             <div class="entry-callout">Best competition score approximately 0.938.</div>
+            <div class="button-row">
+              <a class="button-secondary" href="/projects/svg-generation-competition/">Read case study</a>
+            </div>
           </article>
         </div>
       </section>
@@ -150,6 +166,7 @@
         <div>© 2026 Bhanuja Karumuru</div>
         <div class="footer-links">
           <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="/contact/">Contact</a>
           <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
         </div>

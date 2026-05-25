@@ -10,17 +10,17 @@
     />
     <meta name="author" content="Bhanuja Karumuru" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://bhanujakarumuru.github.io/projects/rtl-optimization-loop/" />
+    <link rel="canonical" href="https://bhanuu01.github.io/projects/rtl-optimization-loop/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="RTL Optimization Loop | Bhanuja Karumuru" />
     <meta property="og:description" content="EDA automation case study with verification, timing analysis, and iterative LLM-assisted patching." />
-    <meta property="og:url" content="https://bhanujakarumuru.github.io/projects/rtl-optimization-loop/" />
-    <meta property="og:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta property="og:url" content="https://bhanuu01.github.io/projects/rtl-optimization-loop/" />
+    <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="RTL Optimization Loop | Bhanuja Karumuru" />
     <meta name="twitter:description" content="EDA automation case study with verification, timing analysis, and iterative LLM-assisted patching." />
-    <meta name="twitter:image" content="https://bhanujakarumuru.github.io/assets/og-preview.png" />
+    <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="application/ld+json">
       {
@@ -32,7 +32,7 @@
           "@type": "Person",
           "name": "Bhanuja Karumuru"
         },
-        "url": "https://bhanujakarumuru.github.io/projects/rtl-optimization-loop/",
+        "url": "https://bhanuu01.github.io/projects/rtl-optimization-loop/",
         "programmingLanguage": ["Python"],
         "applicationCategory": "EDA tooling"
       }
@@ -49,13 +49,14 @@
         </button>
         <nav aria-label="Primary">
           <ul class="nav-links">
-            <li><a href="/">About</a></li>
+            <li><a href="/about/">About</a></li>
             <li><a href="/experience/">Experience</a></li>
             <li><a href="/projects/" aria-current="page">Projects</a></li>
             <li><a href="/hackathons/">Hackathons</a></li>
             <li><a href="/publications/">Publications</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/cv/">CV</a></li>
+                      <li><a href="/contact/">Contact</a></li>
           </ul>
         </nav>
       </div>
@@ -69,28 +70,44 @@
           <header class="article-header">
             <p class="eyebrow">EDA / automation</p>
             <h1>RTL Optimization Loop</h1>
-            <p class="hero-summary">An AI-assisted verification loop for synthesis, timing analysis, and iterative patch generation.</p>
+            <p class="hero-summary">An AI-assisted workflow for synthesis, timing analysis, and iterative RTL patch review.</p>
             <p class="article-meta">Verilator · Yosys · OpenSTA · Python · LLM-assisted tooling</p>
           </header>
 
           <p>
-            This project sits a little differently from the others on the site, but it fits the same pattern:
-            turn a sequence of manual engineering checks into a workflow with clearer feedback and shorter iteration
-            cycles.
+            This project started from a familiar frustration in digital-design work: the time cost of repeatedly
+            running simulation, synthesis, and timing checks just to get back to the next debugging decision.
+            Instead of treating those tools as disconnected steps, I wanted a tighter loop that could surface
+            failures, summarize them, and support the next edit more quickly.
           </p>
 
-          <h2>What it does</h2>
+          <h2>Problem</h2>
           <p>
-            The loop automates synthesis, verification, timing analysis, and LLM-guided patch generation using
-            Verilator, Yosys, and OpenSTA. The goal is not to replace hardware reasoning but to reduce repeated
-            mechanical work so debugging and optimization become more structured.
+            RTL development often involves a repetitive sequence: run simulation, inspect failures, resynthesize,
+            check timing, adjust the code, and repeat. The cost is not only wall-clock time but also context-switching.
+            When the loop is noisy, it is harder to focus on the actual hardware reasoning.
+          </p>
+
+          <h2>What I built</h2>
+          <p>
+            I built a workflow that runs Verilator, Yosys, and OpenSTA in sequence, collects the relevant outputs,
+            and uses an LLM-guided patching step to propose the next edit candidates. The point was not to create
+            push-button hardware design. It was to reduce the amount of repeated setup work around each iteration.
+          </p>
+
+          <h2>How the loop works</h2>
+          <p>
+            Each pass runs linting and simulation, then synthesis and timing analysis, and finally packages the
+            most useful feedback into a form that is easier to review. That structure made the workflow useful even
+            without a dramatic benchmark number, because it clarified where the next engineering decision should come
+            from.
           </p>
 
           <h2>Why it matters</h2>
           <p>
             I included this project because it reflects another side of my interests: tooling and developer loops.
-            The motivating question is the same one I bring to backend or ML systems work: which parts of the loop
-            are actually high-signal, and which parts should be automated so the human can think more clearly?
+            The same instinct shows up in my backend and ML systems work too. I care about shortening the path between
+            “something failed” and “here is the next change worth making.”
           </p>
         </article>
 
@@ -104,6 +121,11 @@
               <li>Python</li>
             </ul>
           </section>
+
+          <section class="article-panel">
+            <h3>Project note</h3>
+            <p>This is an experimental workflow write-up rather than a polished public repository.</p>
+          </section>
         </aside>
       </div>
     </main>
@@ -113,6 +135,7 @@
         <div>© 2026 Bhanuja Karumuru</div>
         <div class="footer-links">
           <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="/contact/">Contact</a>
           <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
         </div>

@@ -36,7 +36,7 @@ Then open `http://localhost:8000`.
 
 The SEO files currently assume the final production URL will be:
 
-`https://bhanujakarumuru.github.io/`
+`https://bhanuu01.github.io/`
 
 If you deploy to a different domain or GitHub Pages URL, update that base URL in:
 

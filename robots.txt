@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bhanujakarumuru.github.io/sitemap.xml
+Sitemap: https://bhanuu01.github.io/sitemap.xml

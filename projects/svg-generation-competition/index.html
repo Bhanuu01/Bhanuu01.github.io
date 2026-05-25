@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SVG Generation Competition Workflow | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Case study on a competition workflow for structured SVG generation using Qwen2.5-Coder-3B-Instruct, LoRA fine-tuning, validation, and repair logic."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bhanuu01.github.io/projects/svg-generation-competition/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="SVG Generation Competition Workflow | Bhanuja Karumuru" />
+    <meta
+      property="og:description"
+      content="Structured-generation case study with LoRA fine-tuning, validation, and repair loops for SVG output."
+    />
+    <meta property="og:url" content="https://bhanuu01.github.io/projects/svg-generation-competition/" />
+    <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SVG Generation Competition Workflow | Bhanuja Karumuru" />
+    <meta
+      name="twitter:description"
+      content="Structured-generation case study with LoRA fine-tuning, validation, and repair loops for SVG output."
+    />
+    <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": "SVG Generation Competition Workflow",
+        "description": "A structured SVG generation workflow built around LoRA fine-tuning, validation, and repair logic.",
+        "author": {
+          "@type": "Person",
+          "name": "Bhanuja Karumuru"
+        },
+        "url": "https://bhanuu01.github.io/projects/svg-generation-competition/"
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell site-nav">
+        <a class="site-brand" href="/">Bhanuja Karumuru</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/" aria-current="page">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/projects/">← Back to projects</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">Applied generative systems</p>
+            <h1>SVG Generation Competition Workflow</h1>
+            <p class="hero-summary">A structured-generation workflow for valid SVG output under competition constraints.</p>
+            <p class="article-meta">Qwen2.5-Coder-3B-Instruct · LoRA · Python · SVG validation</p>
+          </header>
+
+          <p>
+            This project was less about image generation in the abstract and more about structured output discipline.
+            The challenge was to generate SVG that was not only visually plausible but also syntactically valid and
+            robust enough to score well under competition evaluation.
+          </p>
+
+          <h2>Problem</h2>
+          <p>
+            SVG generation exposes a different failure mode than ordinary text generation. A response can look close
+            to correct while still breaking the format contract. That meant the workflow had to care about validity,
+            repair, and constrained decoding rather than only “creative” output.
+          </p>
+
+          <h2>What I built</h2>
+          <p>
+            I fine-tuned Qwen2.5-Coder-3B-Instruct with LoRA and built an experimentation loop around prompt design,
+            decoding choices, response validation, and simple repair logic. The work was iterative by design: run an
+            experiment, inspect failure modes, tighten the checks, and repeat.
+          </p>
+
+          <h2>Experimentation</h2>
+          <p>
+            In total I ran 22 experiments. The value of that process was not only the final score, but the clearer
+            sense of which errors came from model behavior, which came from formatting fragility, and which were better
+            handled by post-generation validation.
+          </p>
+
+          <h2>Outcome</h2>
+          <p>
+            The best run reached an approximate score of 0.938. More importantly, the workflow taught me how to treat
+            structured generation as a systems problem: define the contract, validate the output, and keep the loop
+            honest with repeated measurement.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>22 experiments</p>
+            <p>Best score approximately 0.938</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Stack</h3>
+            <ul>
+              <li>Qwen2.5-Coder-3B-Instruct</li>
+              <li>LoRA fine-tuning</li>
+              <li>Python</li>
+              <li>SVG validation</li>
+            </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Access note</h3>
+            <p>This page documents the workflow and outcome. Competition materials are not currently published as a public repository.</p>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="/contact/">Contact</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>
