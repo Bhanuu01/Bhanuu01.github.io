@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmolVLM Science VQA | Bhanuja Karumuru</title>
+    <meta
+      name="description"
+      content="Case study on a SmolVLM science VQA competition workflow using LoRA, a per-choice ranking setup, and a 5M trainable-parameter cap."
+    />
+    <meta name="author" content="Bhanuja Karumuru" />
+    <link rel="canonical" href="https://bhanuu01.github.io/projects/smolvlm-science-vqa/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="SmolVLM Science VQA | Bhanuja Karumuru" />
+    <meta
+      property="og:description"
+      content="A multimodal competition workflow around SmolVLM-500M-Instruct, LoRA adapters, and structured scoring for science VQA."
+    />
+    <meta property="og:url" content="https://bhanuu01.github.io/projects/smolvlm-science-vqa/" />
+    <meta property="og:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SmolVLM Science VQA | Bhanuja Karumuru" />
+    <meta
+      name="twitter:description"
+      content="A multimodal competition workflow around SmolVLM-500M-Instruct, LoRA adapters, and structured scoring for science VQA."
+    />
+    <meta name="twitter:image" content="https://bhanuu01.github.io/assets/og-preview.png" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell">
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-brand" href="/">Bhanuja Karumuru</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" aria-label="Toggle navigation">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+          <ul class="nav-links" id="site-nav-links">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/experience/">Experience</a></li>
+            <li><a href="/projects/" aria-current="page">Projects</a></li>
+            <li><a href="/hackathons/">Hackathons</a></li>
+            <li><a href="/publications/">Publications</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/cv/">CV</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <progress id="progress" value="0" max="100"></progress>
+    </header>
+
+    <main class="site-shell">
+      <a class="back-link" href="/projects/">← Back to projects</a>
+      <div class="article-wrap">
+        <article class="article">
+          <header class="article-header">
+            <p class="eyebrow">Multimodal / VQA</p>
+            <h1>SmolVLM Science VQA</h1>
+            <p class="hero-summary">A competition workflow for science visual question answering built under a tight model and trainable-parameter budget.</p>
+            <p class="article-meta">SmolVLM-500M-Instruct · LoRA · Kaggle · multimodal ranking</p>
+          </header>
+
+          <p>
+            This project came out of a science VQA competition where the interesting constraint was not only the
+            dataset. It was the deployment budget around the model. The competition allowed
+            <code>HuggingFaceTB/SmolVLM-500M-Instruct</code> and capped trainable parameters at five million, which
+            meant the workflow had to be disciplined about what to tune and how to score outputs.
+          </p>
+
+          <h2>Problem</h2>
+          <p>
+            The task was multiple-choice visual question answering over science problems that mix images, question
+            text, answer options, hints, and lecture-style supporting context. A direct free-form generation setup
+            was easy to try, but harder to evaluate and less stable under the competition constraints.
+          </p>
+
+          <h2>What I built</h2>
+          <p>
+            I turned the task into a per-choice yes/no ranking problem. For each question and answer choice pair, the
+            model predicted whether that choice was correct. At inference time, all choices were scored independently
+            and the highest-scoring option was selected. That made the final decision path easier to compare and debug
+            than asking the model to emit an answer index directly.
+          </p>
+
+          <div class="mini-figure">
+            <p class="diagram-label">Workflow sketch</p>
+            <div class="flow-strip">
+              <div class="flow-node">
+                <strong>Inputs</strong>
+                <span>image + question + choices</span>
+                <span>optional hint, lecture, and metadata</span>
+              </div>
+              <div class="flow-node">
+                <strong>Training path</strong>
+                <span>LoRA on q/k/v/o projection modules</span>
+                <span>yes/no supervision per choice</span>
+              </div>
+              <div class="flow-node flow-node-accent">
+                <strong>Inference path</strong>
+                <span>margin score = log P(yes) - log P(no)</span>
+                <span>pick the highest-scoring choice</span>
+              </div>
+            </div>
+          </div>
+
+          <h2>Training setup</h2>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Part of the workflow</th>
+                <th>What I used</th>
+                <th>Why it mattered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base model</td>
+                <td>SmolVLM-500M-Instruct</td>
+                <td>Stayed inside the competition rules while keeping a real multimodal reasoning path.</td>
+              </tr>
+              <tr>
+                <td>Adapter path</td>
+                <td>LoRA on <code>q_proj</code>, <code>k_proj</code>, <code>v_proj</code>, and <code>o_proj</code></td>
+                <td>Kept the trainable parameter count under the 5M cap without freezing the whole problem into prompt engineering.</td>
+              </tr>
+              <tr>
+                <td>LoRA defaults</td>
+                <td>rank 8, alpha 16, dropout 0.05</td>
+                <td>Started small enough to stay stable and within budget.</td>
+              </tr>
+              <tr>
+                <td>Scoring rule</td>
+                <td>Margin score: <code>log P(yes) - log P(no)</code></td>
+                <td>Made ranking behavior more stable than relying on raw yes scores.</td>
+              </tr>
+              <tr>
+                <td>Context packing</td>
+                <td>Question, choices, hint, lecture, and metadata fields</td>
+                <td>Let the model use both visual and textual scaffolding without changing the downstream decision rule.</td>
+              </tr>
+              <tr>
+                <td>Execution environment</td>
+                <td>Kaggle with 2xT4 available, but a stable single-GPU training path</td>
+                <td>DataParallel was unstable in this setup, so stability mattered more than nominal GPU count.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>What the score meant</h2>
+          <p>
+            The best run reached a competition score of <strong>0.93762</strong>. I treat that as a useful outcome,
+            but the stronger signal for the portfolio is the workflow behind it: the task reformulation, the adapter
+            budget discipline, and the notebook-plus-script path that could train, validate, and generate a
+            submission without becoming a one-off hack.
+          </p>
+
+          <h2>Why it matters</h2>
+          <p>
+            This project is one of the clearest multimodal engineering signals on the site. It shows how I think when
+            a problem is constrained by both model choice and training budget: make the scoring rule explicit, keep the
+            tuning surface small, and build a workflow that can still be measured cleanly.
+          </p>
+        </article>
+
+        <aside class="article-aside">
+          <section class="article-panel">
+            <h3>Proof</h3>
+            <p>Competition score 0.93762</p>
+            <p>LoRA under a 5M trainable-parameter cap</p>
+            <p>Per-choice ranking instead of direct answer generation</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>Stack</h3>
+            <ul>
+              <li>SmolVLM-500M-Instruct</li>
+              <li>LoRA / PEFT</li>
+              <li>PyTorch</li>
+              <li>Kaggle T4 GPUs</li>
+              <li>Transformers</li>
+            </ul>
+          </section>
+
+          <section class="article-panel">
+            <h3>Access note</h3>
+            <p>This workflow is currently documented from the training script and notebook artifacts rather than a cleaned public repo.</p>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="site-shell footer-row">
+        <div>© 2026 Bhanuja Karumuru</div>
+        <div class="footer-links">
+          <a href="mailto:bk3170@nyu.edu">bk3170@nyu.edu</a>
+          <a href="/contact/">Contact</a>
+          <a href="https://linkedin.com/in/bhanujakarumuru" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/Bhanuu01" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/site.js"></script>
+  </body>
+</html>

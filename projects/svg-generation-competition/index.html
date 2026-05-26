@@ -98,6 +98,14 @@
             experiment, inspect failure modes, tighten the checks, and repeat.
           </p>
 
+          <h2>Why it belonged on the site</h2>
+          <p>
+            This project is one of the clearest GenAI engineering signals in the portfolio because it was not a
+            one-shot prompt exercise. It was a repeated training and inference loop with 22 tracked runs, explicit
+            output validation, and repair logic around the model whenever the raw generation path stopped respecting
+            the SVG contract.
+          </p>
+
           <h2>Training and validation loop</h2>
           <table class="artifact-table">
             <thead>
@@ -145,7 +153,7 @@
 
           <h2>What the score meant</h2>
           <p>
-            The best run reached an approximate competition score of 0.938. I treat that number as useful but not
+            The best run reached a competition score of 0.93762. I treat that number as useful but not
             magical. The stronger result was learning which improvements came from model changes, which came from
             decoding choices, and which were better solved by validation and repair around the model.
           </p>
@@ -162,7 +170,7 @@
           <section class="article-panel">
             <h3>Proof</h3>
             <p>22 experiments</p>
-            <p>Best score approximately 0.938</p>
+            <p>Best score 0.93762</p>
             <p>LoRA fine-tuning with validation and repair in the loop</p>
           </section>
 

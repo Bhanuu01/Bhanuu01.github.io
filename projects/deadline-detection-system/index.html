@@ -72,7 +72,7 @@
             <p class="eyebrow">MLOps / NLP</p>
             <h1>Deadline Detection System</h1>
             <p class="hero-summary">An intelligent deadline and expiry extraction workflow for contract text.</p>
-            <p class="article-meta">Python · RoBERTa · BERT NER · MLflow · Docker</p>
+            <p class="article-meta">Python · RoBERTa · BERT NER · MLflow · Ray Tune · Kubernetes</p>
           </header>
 
           <p>
@@ -94,8 +94,9 @@
           <p>
             The workflow uses a sentence-level RoBERTa classifier as a gate, followed by a BERT-based NER model for
             exact span extraction. Around the models, I built the surrounding pieces that make the output operational:
-            dataset preparation, evaluation, review thresholds, structured JSON outputs, and experiment tracking with
-            MLflow.
+            dataset preparation, evaluation, review thresholds, structured JSON outputs, experiment tracking with
+            MLflow, and the serving and deployment path that let the system sit inside Paperless-ngx rather than
+            remain a notebook-only experiment.
           </p>
 
           <h2>Pipeline diagram</h2>
@@ -111,23 +112,41 @@
           <p>
             The model metrics on this page are component-level results, not a claim that the full contract problem was
             solved end to end. The BERT NER stage reached F1 = 1.0 on the curated evaluation split used for the
-            project, while the sentence-level RoBERTa gate reached F1 = 0.8682. The more important result was that
-            the staged setup made extraction behavior easier to reason about than a single all-purpose model.
+            project, while the sentence-level RoBERTa gate reached F1 = 0.8682. That NER result came from a narrow,
+            clause-level split rather than a broad production benchmark, which is exactly why I treat it as a
+            component metric and not as a claim that contract extraction was "solved." The more important result was
+            that the staged setup made extraction behavior easier to reason about than a single all-purpose model.
           </p>
 
           <h2>My contribution</h2>
           <p>
-            This was a team project. My contribution centered on the staged pipeline design, the experiment-tracking
-            workflow, and the output contract that made the system easier to evaluate and easier to connect to a larger
-            document-processing flow.
+            This was a team project. My contribution centered on the staged pipeline design, the MLflow and Ray Tune
+            training workflow, the output contract that made the system easier to evaluate, and the Kubernetes-facing
+            integration path that connected Paperless, serving, and review hooks into one document-processing flow.
+          </p>
+
+          <h2>Hyperparameter search and experiment tracking</h2>
+          <p>
+            The classifier training path did not rely only on manual tweaking. I used Ray Tune with an ASHA-based
+            search setup to compare RoBERTa classifier runs, then logged the resulting configs and outcomes into
+            MLflow so the training side and deployment side stayed tied to the same record of what changed.
           </p>
 
           <h2>System behavior around the models</h2>
           <p>
             The pipeline was designed to sit inside a document workflow rather than in a notebook. It supported
             asynchronous queueing, burst absorption, autoscaling to a second worker under sustained queue depth, and
-            monitoring around inference latency, event creation volume, and user corrections. That surrounding behavior
-            is what made the model outputs operational.
+            monitoring around inference latency, event creation volume, and user corrections. The integrated repo also
+            grew an ONNX serving path, Paperless post-consume hooks, and release automation that could promote or roll
+            back a serving path inside the cluster. That surrounding behavior is what made the model outputs operational.
+          </p>
+
+          <h2>Deployment shape</h2>
+          <p>
+            The integrated system ran on a single-node <code>k3s</code> cluster on Chameleon. Paperless, MLflow,
+            MinIO, serving, online features, monitoring, and release components each had their own Kubernetes
+            manifests, with ONNX serving exposed as the production inference path and Prometheus/Grafana watching
+            confidence, review-required volume, and P95 latency.
           </p>
 
           <h2>Why this project matters</h2>
@@ -169,7 +188,8 @@
             <li>Two-stage classifier plus NER pipeline to reduce false extraction from irrelevant text.</li>
             <li>Structured outputs designed for downstream systems and human-review loops.</li>
             <li>Confidence thresholds with low-confidence routing for feedback and retraining.</li>
-            <li>MLflow tracking and Docker packaging for reproducibility.</li>
+            <li>Ray Tune plus MLflow for reproducible model search and experiment tracking.</li>
+            <li>Kubernetes deployment with Paperless hooks, ONNX serving, and monitoring services.</li>
           </ul>
         </article>
 
@@ -189,6 +209,8 @@
               <li>BERT NER</li>
               <li>MLflow</li>
               <li>Docker</li>
+              <li>Ray Tune</li>
+              <li>k3s / Kubernetes</li>
               <li>Paperless-ngx integration</li>
             </ul>
           </section>

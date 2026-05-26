@@ -71,8 +71,8 @@
           <header class="article-header">
             <p class="eyebrow">Recommendation / retrieval</p>
             <h1>StyleSync</h1>
-            <p class="hero-summary">A fashion recommendation system extended from a hackathon concept into a fuller retrieval pipeline.</p>
-            <p class="article-meta">FAISS · FastAPI · Python · Gemini API · computer vision</p>
+            <p class="hero-summary">A fashion recommendation system extended from a hackathon concept into a two-tower retrieval stack with public serving surfaces.</p>
+            <p class="article-meta">TensorFlow Recommenders · FAISS · FastAPI · Streamlit · H&amp;M dataset</p>
           </header>
 
           <p>
@@ -84,16 +84,34 @@
           <h2>Problem</h2>
           <p>
             The original question was simple: can a user look at an item on the web and quickly surface visually
-            similar alternatives? Solving that cleanly required more than a frontend demo. It needed embeddings,
-            retrieval, indexing, and a serving path that could respond predictably.
+            similar alternatives? Solving that cleanly required more than a frontend demo. It needed a trainable
+            retrieval setup, candidate generation, deployment surfaces, and a serving path that could respond
+            predictably instead of just returning one-off search results.
           </p>
 
           <h2>System shape</h2>
           <p>
-            The project was extended into a two-tower retrieval pipeline built with TensorFlow Recommenders. User and
-            item embeddings were learned from interaction data, indexed with FAISS for approximate nearest-neighbor
-            lookup, and served through containerized FastAPI endpoints. That changed the work from a quick demo into
-            a retrieval problem with real indexing and serving decisions.
+            The project was extended into a two-tower retrieval pipeline built with TensorFlow Recommenders. A
+            user tower learned a retrieval representation from transaction history, while an item tower learned the
+            catalog side that could be exported and indexed. Candidate generation then moved through FAISS, and the
+            project grew a FastAPI backend plus a Streamlit front end for public interaction.
+          </p>
+
+          <h2>Architecture diagram</h2>
+          <figure class="mini-figure project-diagram">
+            <img src="/assets/stylesync-architecture.svg" alt="Diagram showing H and M transaction and catalog data flowing into two retrieval towers, item embeddings exported into FAISS, and FastAPI and Streamlit layers serving recommendations." />
+            <p class="figure-caption">
+              The useful shift was turning a browser-side idea into a retrieval system with a trainable user tower,
+              an exportable item tower, an ANN index, and separate frontend and backend surfaces.
+            </p>
+          </figure>
+
+          <h2>Dataset and artifacts</h2>
+          <p>
+            The retrieval stack was built around the H&amp;M Kaggle dataset, using at minimum
+            <code>transactions_train.csv</code> and <code>articles.csv</code>, with optional customer metadata and
+            precomputed image features. The repo also supports optional ResNet50 image embeddings so image-side
+            signals can be folded back into training and export rather than treated as a separate demo path.
           </p>
 
           <h2>Evaluation snapshot</h2>
@@ -112,24 +130,29 @@
                 <td>Moved the project beyond a browser-only prototype into a trainable retrieval setup.</td>
               </tr>
               <tr>
+                <td>Dataset</td>
+                <td>H&amp;M Kaggle transactions and article catalog</td>
+                <td>Made the project reproducible instead of depending on ad hoc product examples.</td>
+              </tr>
+              <tr>
                 <td>Indexing</td>
                 <td>FAISS ANN index for item lookup</td>
                 <td>Turned embeddings into fast nearest-neighbor search rather than one-off similarity checks.</td>
               </tr>
               <tr>
                 <td>Serving</td>
-                <td>Containerized FastAPI services</td>
-                <td>Gave the project a stable backend path instead of keeping it as a front-end demo.</td>
+                <td>FastAPI backend on Render plus Streamlit frontend</td>
+                <td>Made the project easy to try directly instead of leaving it as a local-only prototype.</td>
               </tr>
               <tr>
-                <td>Latency</td>
-                <td>Sub-100 ms end-to-end inference latency</td>
-                <td>Shows the system was designed to feel responsive, not only technically correct.</td>
+                <td>Artifacts</td>
+                <td><code>faiss.index</code>, <code>item_ids.npy</code>, exported user and item towers</td>
+                <td>Shows the retrieval system was packaged as a reusable serving artifact, not only a training run.</td>
               </tr>
               <tr>
-                <td>Operations</td>
-                <td>Offline training pipeline, model versioning, and health checks</td>
-                <td>Made the recommender easier to retrain and reason about over time.</td>
+                <td>Image pathway</td>
+                <td>Optional ResNet50 image embeddings</td>
+                <td>Kept the project connected to visual inputs instead of reducing it to pure tabular retrieval.</td>
               </tr>
             </tbody>
           </table>
@@ -138,7 +161,15 @@
           <p>
             The part that mattered most after the hackathon was deciding what deserved to survive. The browser
             interaction idea stayed, but the project became more serious once the retrieval model, FAISS index, and
-            serving layer were explicit parts of the design.
+            serving layer were explicit parts of the design. That is when it stopped being “Gemini plus shopping
+            links” and became a recommendation system with a clearer technical center.
+          </p>
+
+          <h2>Live surfaces</h2>
+          <p>
+            The repo now exposes a Streamlit app for the user-facing flow and a FastAPI service on Render for the
+            recommendation endpoint, including a public docs page. That matters because it turns the work into
+            something a recruiter or engineer can click through instead of only read about.
           </p>
 
           <h2>Why it matters</h2>
@@ -156,7 +187,8 @@
               <li>TensorFlow Recommenders</li>
               <li>FAISS indexing</li>
               <li>FastAPI serving</li>
-              <li>Image retrieval</li>
+              <li>Streamlit frontend</li>
+              <li>H&amp;M dataset</li>
               <li>Python</li>
             </ul>
           </section>
@@ -164,7 +196,8 @@
           <section class="article-panel">
             <h3>Proof</h3>
             <p>Two-tower retrieval pipeline</p>
-            <p>Sub-100 ms end-to-end inference latency</p>
+            <p>Public Streamlit and Render deployments</p>
+            <p>FAISS index plus exported user and item towers</p>
           </section>
 
           <section class="article-panel">
@@ -174,6 +207,11 @@
 
           <section class="article-panel">
             <h3>Links</h3>
+            <div class="button-row">
+              <a class="button" href="https://stylesync-88c6xauzznaxkddpwnwrhn.streamlit.app" target="_blank" rel="noreferrer">Live demo ↗</a>
+              <a class="button-secondary" href="https://stylesync-ltjf.onrender.com/docs" target="_blank" rel="noreferrer">API docs ↗</a>
+              <a class="button-secondary" href="https://stylesync-ltjf.onrender.com" target="_blank" rel="noreferrer">Backend ↗</a>
+            </div>
             <div class="button-row">
               <a class="button" href="https://github.com/Bhanuu01/StyleSync" target="_blank" rel="noreferrer">Repository ↗</a>
               <a class="button-secondary" href="/hackathons/">Hackathon context</a>

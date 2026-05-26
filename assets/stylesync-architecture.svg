@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">StyleSync retrieval architecture</title>
+  <desc id="desc">A simple architecture diagram showing H and M data feeding user and item towers, FAISS indexing, and FastAPI and Streamlit deployment surfaces.</desc>
+  <rect width="1180" height="680" fill="#f7f8fb"/>
+  <rect x="40" y="40" width="1100" height="600" rx="28" fill="#ffffff" stroke="#d7dbe2" stroke-width="2"/>
+
+  <text x="80" y="95" fill="#5a6474" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="2">RETRIEVAL SYSTEM</text>
+  <text x="80" y="138" fill="#152338" font-family="Iowan Old Style, Palatino, serif" font-size="38">StyleSync architecture</text>
+  <text x="80" y="172" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="20">From H&amp;M interactions to user and item towers, FAISS candidate generation, and live serving surfaces.</text>
+
+  <rect x="80" y="230" width="210" height="110" rx="20" fill="#eef2f9" stroke="#cfd7e8"/>
+  <text x="105" y="275" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">H&amp;M data</text>
+  <text x="105" y="308" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">transactions_train.csv</text>
+  <text x="105" y="332" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">articles.csv, customers.csv</text>
+
+  <rect x="350" y="210" width="220" height="150" rx="20" fill="#f4f6fa" stroke="#d7dbe2"/>
+  <text x="390" y="258" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">User tower</text>
+  <text x="390" y="292" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">interaction history</text>
+  <text x="390" y="316" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">retrieval embedding</text>
+
+  <rect x="350" y="390" width="220" height="150" rx="20" fill="#f4f6fa" stroke="#d7dbe2"/>
+  <text x="390" y="438" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Item tower</text>
+  <text x="390" y="472" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">catalog metadata</text>
+  <text x="390" y="496" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">optional ResNet50 image path</text>
+
+  <rect x="650" y="300" width="210" height="150" rx="20" fill="#e9eef8" stroke="#cfd7e8"/>
+  <text x="690" y="352" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">FAISS index</text>
+  <text x="690" y="386" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">item embeddings</text>
+  <text x="690" y="410" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">candidate generation</text>
+
+  <rect x="920" y="220" width="170" height="140" rx="20" fill="#f4f6fa" stroke="#d7dbe2"/>
+  <text x="952" y="270" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">FastAPI</text>
+  <text x="952" y="304" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">Render backend</text>
+  <text x="952" y="328" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">/recommend API</text>
+
+  <rect x="920" y="400" width="170" height="140" rx="20" fill="#f4f6fa" stroke="#d7dbe2"/>
+  <text x="947" y="450" fill="#152338" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Streamlit</text>
+  <text x="947" y="484" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">frontend demo</text>
+  <text x="947" y="508" fill="#4e5869" font-family="Inter, Arial, sans-serif" font-size="18">public interaction</text>
+
+  <path d="M290 285 H335" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M290 285 C322 285 322 285 350 285" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M290 285 C322 285 322 465 350 465" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M570 285 C610 285 610 345 650 345" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M570 465 C610 465 610 405 650 405" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M860 345 C895 345 895 290 920 290" stroke="#6377af" stroke-width="4" fill="none"/>
+  <path d="M860 405 C895 405 895 470 920 470" stroke="#6377af" stroke-width="4" fill="none"/>
+
+  <circle cx="335" cy="285" r="5" fill="#6377af"/>
+  <circle cx="650" cy="345" r="5" fill="#6377af"/>
+  <circle cx="650" cy="405" r="5" fill="#6377af"/>
+  <circle cx="920" cy="290" r="5" fill="#6377af"/>
+  <circle cx="920" cy="470" r="5" fill="#6377af"/>
+</svg>

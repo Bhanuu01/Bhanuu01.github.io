@@ -654,6 +654,12 @@ main {
   margin-top: 14px;
 }
 
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -738,6 +744,13 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+}
+
+.compact-proof-grid .proof-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .proof-card h3 {
@@ -1045,6 +1058,13 @@ main {
 }
 
 .project-diagram img {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(215, 219, 226, 0.9);
+  background: #fff;
+}
+
+.github-snapshot img {
   width: 100%;
   border-radius: 16px;
   border: 1px solid rgba(215, 219, 226, 0.9);

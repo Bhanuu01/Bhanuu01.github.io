@@ -95,8 +95,8 @@
           <p class="eyebrow">Overview</p>
           <h1 class="hero-title">Bhanuja Karumuru</h1>
           <p class="hero-summary">
-            I build ML systems that perform under real constraints, from CUDA kernels and profiler-driven optimization
-            to production serving pipelines, backend APIs, and reviewable model workflows.
+            I build the infrastructure that makes ML systems reliable under real production constraints, from CUDA kernel
+            profiling on H100 to async backend pipelines and reproducible MLOps workflows.
           </p>
           <div class="hero-actions">
             <a class="button" href="/projects/">Selected Work</a>
@@ -128,8 +128,8 @@
               <div class="timeline-date">2025–2026</div>
               <h3>Research and systems depth at NYU</h3>
               <p>
-                Contributing to the Secure Systems Lab and ARC Robotics, while building course and project
-                work around performance, infrastructure, and production-oriented machine learning.
+                Contributing to secure ML runtime work in the Secure Systems Lab and perception workflows in ARC
+                Robotics, while building course and project work around performance, infrastructure, and production ML.
               </p>
             </div>
             <div class="timeline-entry">
@@ -194,7 +194,7 @@
               <h3 class="project-name"><a href="/projects/deadline-detection-system/">Datanauts deadline detection</a></h3>
               <p>
                 A gated classifier-plus-NER workflow for contract deadline extraction, built with MLflow,
-                Docker, structured JSON outputs, and a feedback loop for reviewable outputs.
+                Ray Tune, Kubernetes, structured JSON outputs, and a feedback loop for reviewable outputs.
               </p>
               <div class="metric-pill">BERT NER F1 = 1.0 · RoBERTa F1 = 0.8682</div>
             </article>
@@ -202,10 +202,19 @@
               <div class="work-kicker">Backend and retrieval</div>
               <h3 class="project-name"><a href="/projects/stylesync/">StyleSync</a></h3>
               <p>
-                A recommendation system built from a hackathon idea into a more complete retrieval pipeline
-                with TensorFlow Recommenders, FAISS indexing, and FastAPI-based serving.
+                A two-tower recommender on the H&amp;M dataset with FAISS candidate generation, FastAPI serving, and
+                public Streamlit and Render deployments.
               </p>
-              <div class="metric-pill muted">Two-tower retrieval · FAISS · sub-100 ms</div>
+              <div class="metric-pill muted">TFRS · FAISS · H&amp;M dataset · live demo</div>
+            </article>
+            <article class="support-item">
+              <div class="work-kicker">Multimodal fine-tuning</div>
+              <h3 class="project-name"><a href="/projects/smolvlm-science-vqa/">SmolVLM science VQA</a></h3>
+              <p>
+                A competition workflow for science visual question answering built around SmolVLM-500M-Instruct,
+                LoRA adapters, and a per-choice ranking formulation under a 5M trainable-parameter cap.
+              </p>
+              <div class="metric-pill muted">LoRA · 2xT4 Kaggle setup · score 0.93762</div>
             </article>
           </div>
         </div>
@@ -232,7 +241,7 @@
                 <h3>Accepted in the Journal of Signal Processing Systems.</h3>
                 <p>
                   “Fusion of data augmentation for improved dysarthria severity classification” was accepted for
-                  publication in Springer's Journal of Signal Processing Systems.
+                  publication in Springer's Journal of Signal Processing Systems as manuscript VLSI-D-25-00096R1.
                 </p>
               </div>
               <div class="milestone-item">

@@ -91,7 +91,7 @@
             </div>
             <div class="button-row">
               <a class="button" href="/projects/fused-linear-attention/">Read case study</a>
-              <a class="button-secondary" href="https://github.com/Bhanuu01/FusedLinearAttention" target="_blank" rel="noreferrer">Repository ↗</a>
+              <a class="button-secondary" href="https://github.com/Bhanuu01/Fused-Linear-Attention" target="_blank" rel="noreferrer">Repository ↗</a>
               <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">Related writing</a>
             </div>
           </article>
@@ -110,11 +110,21 @@
             <article class="support-item">
               <div class="work-kicker">Retrieval and serving</div>
               <h3 class="project-name"><a href="/projects/stylesync/">StyleSync</a></h3>
-              <p>Extended a hackathon build into a fuller two-tower recommender with FAISS indexing, FastAPI serving, and sub-100 ms inference.</p>
-              <div class="metric-pill muted">TensorFlow Recommenders · FAISS · sub-100 ms</div>
+              <p>Extended a hackathon build into a fuller two-tower recommender with TensorFlow Recommenders, FAISS candidate generation, and public Streamlit and Render deployments.</p>
+              <div class="metric-pill muted">H&amp;M dataset · FAISS · Streamlit + FastAPI</div>
               <div class="button-row">
                 <a class="button-secondary" href="/projects/stylesync/">Case study</a>
+                <a class="button-secondary" href="https://stylesync-88c6xauzznaxkddpwnwrhn.streamlit.app" target="_blank" rel="noreferrer">Live demo ↗</a>
                 <a class="button-secondary" href="https://github.com/Bhanuu01/StyleSync" target="_blank" rel="noreferrer">Repository ↗</a>
+              </div>
+            </article>
+            <article class="support-item">
+              <div class="work-kicker">Multimodal fine-tuning</div>
+              <h3 class="project-name"><a href="/projects/smolvlm-science-vqa/">SmolVLM Science VQA</a></h3>
+              <p>Fine-tuned SmolVLM-500M-Instruct with LoRA for a science visual question answering competition under a 5M trainable-parameter cap.</p>
+              <div class="metric-pill muted">LoRA · 2xT4 Kaggle setup · score 0.93762</div>
+              <div class="button-row">
+                <a class="button-secondary" href="/projects/smolvlm-science-vqa/">Case study</a>
               </div>
             </article>
           </div>
@@ -142,9 +152,27 @@
               Fine-tuned Qwen2.5-Coder-3B-Instruct with LoRA for structured SVG generation, iterating on decoding,
               repair logic, and response validation over 22 experiments.
             </p>
-            <div class="entry-callout">22 experiments, LoRA fine-tuning, and a best competition score of approximately 0.938.</div>
+            <div class="entry-callout">22 experiments, LoRA fine-tuning, and a best competition score of 0.93762.</div>
             <div class="button-row">
               <a class="button-secondary" href="/projects/svg-generation-competition/">Read case study</a>
+            </div>
+          </article>
+
+          <article class="entry-card">
+            <div class="entry-topline">
+              <div>
+                <div class="entry-kicker">Vision-language competition work</div>
+                <h3 class="entry-title"><a href="/projects/smolvlm-science-vqa/">SmolVLM Science VQA</a></h3>
+              </div>
+              <div class="entry-date">Multimodal LoRA</div>
+            </div>
+            <p>
+              Built a notebook-driven competition workflow around SmolVLM-500M-Instruct for science multiple-choice
+              VQA, using a per-choice yes/no ranking formulation instead of direct answer generation.
+            </p>
+            <div class="entry-callout">LoRA rank 8 under a 5M trainable-parameter cap, single-GPU stability on Kaggle T4s, and a best score of 0.93762.</div>
+            <div class="button-row">
+              <a class="button-secondary" href="/projects/smolvlm-science-vqa/">Read case study</a>
             </div>
           </article>
         </div>

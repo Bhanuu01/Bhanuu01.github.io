@@ -114,13 +114,15 @@
               <h3>NYU VIP ARC Robotics</h3>
               <div class="role-line">Computer Vision Researcher</div>
               <p>
-                Worked on perception and training workflows for Team UltraViolet, NYU's VIP robotics team in the
-                RoboMaster ecosystem. The work included model iteration, experiment setup, and using remote GPU
-                infrastructure instead of keeping everything local.
+                Worked on the perception pipeline for Team UltraViolet, NYU's VIP robotics team in the RoboMaster
+                ecosystem. The work was less about "training a model once" and more about tracing where frame time
+                was going in a ROS2 plus YOLOv8 stack, then deciding which parts belonged in Python and which parts
+                should eventually move closer to TensorRT and C++ deployment.
               </p>
               <ul>
-                <li>Supported the computer-vision side of a student robotics stack that also spans controls, DevOps, and autonomous systems.</li>
-                <li>Used cloud GPU infrastructure for training and evaluation so experiments were easier to rerun and compare.</li>
+                <li>Mapped the full detection path from camera frame to preprocessing, GPU inference, post-processing, and publish, then used that analysis to isolate the hot spots worth fixing first.</li>
+                <li>Reviewed the CPU letterbox path in <code>utils.py</code> and documented that resize plus padding cost about 2-3 ms per frame before inference, with an additional host-to-device copy immediately after preprocessing.</li>
+                <li>Compared the existing Python <code>rclpy</code> node against a TensorRT-based C++ ROS2 branch and concluded that Python was better for iteration, while a C++ path with pre-allocated CUDA streams was the better final deployment target on Jetson.</li>
               </ul>
               <div class="tags"><span class="tag">Computer Vision</span><span class="tag">Robotics</span><span class="tag">PyTorch</span></div>
             </div>
@@ -133,12 +135,12 @@
               <div class="role-line">Graduate Research Contributor</div>
               <p>
                 Worked within Justin Cappos's Secure Systems Lab on workload isolation and deployment questions for
-                machine learning environments, with more attention on Linux and virtualization boundaries than on
-                model development itself.
+                machine learning environments. This was systems-facing lab work centered on runtime boundaries,
+                deployment assumptions, and how much trust ML tooling quietly expects from the host underneath it.
               </p>
               <ul>
-                <li>Looked at how ML workloads can be separated more safely at the systems layer instead of treating every experiment as a single trusted runtime.</li>
-                <li>Built stronger intuition for operating-system constraints, deployment assumptions, and reliability tradeoffs through that work.</li>
+                <li>Spent most of the work on Linux and virtualization boundaries rather than model code, especially where shared environments make "just run the notebook" a weak security assumption.</li>
+                <li>Used that work to build stronger intuition for isolation tradeoffs, lab environment setup, and what has to change when an ML workload stops being a single trusted local process.</li>
               </ul>
               <div class="tags"><span class="tag">Systems Security</span><span class="tag">Linux</span><span class="tag">Virtualization</span></div>
             </div>

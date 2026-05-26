@@ -267,6 +267,19 @@ for each tile in sequence:
             </tbody>
           </table>
 
+          <h2>Why this path instead of just leaning on cuBLAS or Triton</h2>
+          <p>
+            cuBLAS stayed in the loop for the best hybrid path because projection was exactly the part that benefited
+            most from a mature Tensor Core implementation. The goal of this project was not to prove that every stage
+            had to be rewritten from scratch. It was to understand what changed when the attention path was made more
+            explicit and memory movement was reduced.
+          </p>
+          <p>
+            I also did not frame this as a Triton exercise. Triton would be a reasonable follow-up, but the point here
+            was to understand the shared-memory layout, bank-conflict padding, and WMMA direction at the CUDA level
+            first, because that is where the profiler evidence became easiest to trust.
+          </p>
+
           <h2>What did not work</h2>
           <p>
             The fully fused scalar path is the part I would not hide. It looked like the most aggressive optimization,
