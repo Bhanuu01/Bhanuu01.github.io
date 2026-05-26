@@ -33,7 +33,7 @@
           "name": "Bhanuja Karumuru"
         },
         "url": "https://bhanuu01.github.io/projects/fused-linear-attention/",
-        "codeRepository": "https://github.com/Bhanuu01/FusedLinearAttention",
+        "codeRepository": "https://github.com/Bhanuu01/Fused-Linear-Attention",
         "programmingLanguage": ["CUDA", "Python"],
         "applicationCategory": "Machine Learning Systems"
       }
@@ -103,6 +103,15 @@
             The shared-memory arrays used <code>[T][d+1]</code> padding to avoid bank conflicts, and the final fused
             kernel used a <code>T = 64</code> tile choice on H100.
           </p>
+
+          <h2>Architecture diagram</h2>
+          <figure class="mini-figure project-diagram">
+            <img src="/assets/fused-linear-attention-memory.svg" alt="Diagram comparing the unfused baseline HBM round-trip with the custom tiled attention path and the shared-memory layout used by the fused kernel." />
+            <p class="figure-caption">
+              The core change was not just “fusion” in the abstract. It was staging Q, K, V, and output tiles in shared
+              memory with T = 64 and d + 1 padding so the kernel could avoid the repeated QKV round-trip through HBM.
+            </p>
+          </figure>
 
           <h2>Memory path sketch</h2>
           <div class="mini-figure">
@@ -274,7 +283,7 @@
           <section class="article-panel">
             <h3>Related path</h3>
             <div class="button-row">
-              <a class="button" href="https://github.com/Bhanuu01/FusedLinearAttention" target="_blank" rel="noreferrer">Repository ↗</a>
+              <a class="button" href="https://github.com/Bhanuu01/Fused-Linear-Attention" target="_blank" rel="noreferrer">Repository ↗</a>
               <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">CUDA note</a>
               <a class="button-secondary" href="/projects/">Project overview</a>
             </div>

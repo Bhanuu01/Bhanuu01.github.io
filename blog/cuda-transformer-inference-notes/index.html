@@ -115,12 +115,31 @@
             Cores idle.
           </p>
 
+          <h2>What the profiling stack actually captured</h2>
+          <p>
+            The project used CUDA-event timing for the final wall-clock comparisons, NVTX annotations plus Nsight
+            Systems for timeline inspection, and an analytical HBM model that was checked against the committed result
+            tables. The repo also prepared an occupancy sweep and Nsight Compute metric hooks around
+            <code>l1tex__t_bytes</code> and
+            <code>sm__warps_active.avg.pct_of_peak_sustained_active</code>, but the published artifact set did not
+            preserve a complete final dump of measured occupancy or L2 counters. I am keeping that distinction explicit
+            here because the useful profiler evidence from this project was real, but not every planned counter made it
+            into the final committed output.
+          </p>
+
           <h2>Why the tile shape mattered</h2>
           <p>
             The final fused kernel used a <code>T = 64</code> tile shape. That gave a workable balance between
             shared-memory residency and thread-level coordination without pushing the kernel into an even more fragile
             register or occupancy tradeoff. The shared-memory layout used <code>[T][d+1]</code> padding to avoid bank
             conflicts while staging Q, K, and V tiles.
+          </p>
+          <p>
+            The stronger reason for <code>T = 64</code> was hardware budget, not aesthetics. At
+            <code>d = 64</code>, the four shared-memory arrays <code>sQ</code>, <code>sK</code>, <code>sV</code>, and
+            <code>sO</code> consume about 65 KB per block on H100, which still allows two resident blocks per SM.
+            Going larger pushed the kernel toward a one-block-per-SM regime, and smaller tiles left the kernel
+            under-filled enough that the extra coordination overhead stopped being worth it.
           </p>
           <pre data-code-label="Shared-memory tiling sketch"><code>// simplified shared-memory sketch
 constexpr int T = 64;
@@ -180,6 +199,11 @@ for each tile in sequence:
                 <td>HBM reads</td>
                 <td>up to 54.6% lower</td>
                 <td>The original memory-traffic hypothesis was real. The QKV round-trip was expensive enough to matter.</td>
+              </tr>
+              <tr>
+                <td>Exact HBM read estimate at N = 1024</td>
+                <td>11.53 MB baseline vs 5.24 MB fused</td>
+                <td>The largest sequence length made the memory gap concrete instead of leaving it at a percentage headline.</td>
               </tr>
               <tr>
                 <td>Best short-sequence speedups</td>
@@ -248,6 +272,11 @@ for each tile in sequence:
             The fully fused scalar path is the part I would not hide. It looked like the most aggressive optimization,
             and it was not the best runtime result. That was useful. It made the next step obvious: once the HBM cost
             comes down, a weak compute path becomes easier to see.
+          </p>
+          <p>
+            In other words, the profiler did not tell me “the idea failed.” It told me the optimization had already
+            moved the project into a different bottleneck class. The moment the QKV round-trip cost fell enough, the
+            scalar fp32 projection loops became impossible to ignore.
           </p>
 
           <h2>What I would do next</h2>

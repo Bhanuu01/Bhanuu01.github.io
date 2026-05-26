@@ -69,10 +69,10 @@
         <article class="article">
           <header class="article-header">
             <p class="eyebrow">CogniChip hackathon</p>
-            <h1>AI-Driven Layout-Aware RTL Optimization Workflow</h1>
-            <p class="hero-summary">A hackathon workflow for RTL simulation, synthesis, timing analysis, and iterative patch review.</p>
-            <p class="article-meta">Verilator · Yosys · OpenSTA · Python · LLM-assisted tooling</p>
-          </header>
+          <h1>AI-Driven Layout-Aware RTL Optimization Workflow</h1>
+          <p class="hero-summary">A hackathon workflow for RTL simulation, synthesis, timing analysis, and iterative patch review.</p>
+          <p class="article-meta">Verilator · Yosys · OpenSTA · Python · LLM-assisted tooling</p>
+        </header>
 
           <p>
             This work came out of the NYU and CogniChip hackathon in February 2026, which focused on AI-assisted
@@ -95,11 +95,47 @@
             hardware reasoning. It was to reduce repeated setup work and make each design iteration easier to inspect.
           </p>
 
+          <h2>How the loop worked in practice</h2>
+          <p>
+            The useful part of the workflow was that each tool fed the next one without forcing the person debugging
+            the design to keep rebuilding context from scratch. Verilator handled linting and simulation, Yosys turned
+            the RTL into a synthesizable netlist, OpenSTA surfaced timing pressure, and the Python wrapper collected
+            those outputs into one reviewable packet before the next patch was proposed.
+          </p>
+          <p>
+            In a normal short hackathon cycle, a lot of time disappears into small repeated actions: rerunning
+            simulation, opening different logs, figuring out whether a failure is functional or timing-related, and
+            translating that context into the next change. The workflow compressed that into one repeatable pass.
+            Instead of “run one tool, open another, copy notes, then think,” the loop became “run the stack, inspect
+            one summarized result, decide what to patch next.”
+          </p>
+
           <h2>How the loop worked</h2>
           <p>
             Each pass ran linting and simulation, then synthesis and timing analysis, and finally packaged the most
             useful feedback into a form that was easier to review. That structure mattered more than a single benchmark
             number because it made the next engineering decision clearer during a short hackathon window.
+          </p>
+
+          <h2>Why the workflow mattered</h2>
+          <p>
+            The project was not trying to claim a solved optimization engine in one weekend. What it did show was that
+            the manual design loop around RTL work can be shortened meaningfully if the verification, synthesis, and
+            timing steps are treated as one tooling surface instead of three separate chores. That is the part that
+            made the project worth keeping on the site.
+          </p>
+          <p>
+            It also fit a pattern that shows up in the rest of my work. Whether the system is a backend API, an ML
+            workflow, or an RTL toolchain, I tend to care about the same question: where is the actual bottleneck in
+            the loop, and how do we remove the unnecessary coordination cost around it?
+          </p>
+
+          <h2>What I would improve next</h2>
+          <p>
+            A stronger version of this project would track loop-time reduction explicitly, separate simulation failures
+            from timing failures more cleanly in the summary layer, and keep a history of candidate patches so the next
+            suggestion can build on what already failed. I am intentionally not claiming a precise percentage reduction
+            here because the hackathon version was more about workflow compression than about a stable benchmark.
           </p>
 
           <h2>Why I kept it on the site</h2>
@@ -124,6 +160,11 @@
           <section class="article-panel">
             <h3>Hackathon note</h3>
             <p>This page is a write-up from a team hackathon project rather than a longer-form standalone project.</p>
+          </section>
+
+          <section class="article-panel">
+            <h3>What it improved</h3>
+            <p>Compressed the simulation → synthesis → timing → patch loop into one repeatable pass instead of several disconnected tool hops.</p>
           </section>
         </aside>
       </div>

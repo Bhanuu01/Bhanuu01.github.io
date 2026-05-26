@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Deadline detection system pipeline</title>
+  <desc id="desc">Diagram showing clause input, gate classifier, NER stage, and review routing into structured JSON output.</desc>
+  <rect width="1200" height="620" fill="#f7f8fa"/>
+  <rect x="50" y="55" width="1100" height="510" rx="28" fill="#ffffff" stroke="#d7dbe2" stroke-width="2"/>
+  <text x="85" y="110" font-family="Georgia, serif" font-size="34" fill="#152338">Deadline extraction pipeline</text>
+  <text x="86" y="145" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">The project became useful once the output contract and review boundary were treated as part of the system, not as afterthoughts.</text>
+
+  <g transform="translate(95 220)">
+    <rect width="190" height="92" rx="18" fill="#e8edf7" stroke="#cfd8ea"/>
+    <text x="26" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#152338">Clause input</text>
+    <text x="26" y="66" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">normalize text</text>
+  </g>
+
+  <g transform="translate(345 220)">
+    <rect width="220" height="92" rx="18" fill="#edf3ef" stroke="#c9d8cd"/>
+    <text x="24" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#152338">RoBERTa gate</text>
+    <text x="24" y="66" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">relevant or not</text>
+  </g>
+
+  <g transform="translate(625 220)">
+    <rect width="220" height="92" rx="18" fill="#e8edf7" stroke="#cfd8ea"/>
+    <text x="24" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#152338">BERT NER</text>
+    <text x="24" y="66" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">extract spans</text>
+  </g>
+
+  <g transform="translate(905 220)">
+    <rect width="180" height="92" rx="18" fill="#f4f8fc" stroke="#cfd8ea"/>
+    <text x="22" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#152338">Routing</text>
+    <text x="22" y="66" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">review threshold</text>
+  </g>
+
+  <path d="M285 266 H335" stroke="#3b4f86" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M565 266 H615" stroke="#3b4f86" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M845 266 H895" stroke="#3b4f86" stroke-width="5" marker-end="url(#arrow)"/>
+
+  <g transform="translate(345 380)">
+    <rect width="360" height="120" rx="22" fill="#ffffff" stroke="#d7dbe2"/>
+    <text x="22" y="34" font-family="Courier New, monospace" font-size="19" fill="#283966">{</text>
+    <text x="42" y="34" font-family="Courier New, monospace" font-size="18" fill="#283966">"is_relevant": true,</text>
+    <text x="42" y="58" font-family="Courier New, monospace" font-size="18" fill="#283966">"document_event_type": "notice_deadline",</text>
+    <text x="42" y="82" font-family="Courier New, monospace" font-size="18" fill="#283966">"review_required": false,</text>
+    <text x="42" y="106" font-family="Courier New, monospace" font-size="18" fill="#283966">"confidence": { "classifier": 0.93, "ner": 0.88 }</text>
+  </g>
+
+  <path d="M995 312 V365 H705" stroke="#3b4f86" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="865" y="350" font-family="Arial, sans-serif" font-size="18" fill="#4e5869">stable JSON output</text>
+
+  <rect x="760" y="395" width="285" height="85" rx="18" fill="#fbe8e6" stroke="#d77d72"/>
+  <text x="784" y="432" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#8a3c31">Low-confidence path</text>
+  <text x="784" y="462" font-family="Arial, sans-serif" font-size="18" fill="#8a3c31">same schema, but routed into review</text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b4f86"/>
+    </marker>
+  </defs>
+</svg>

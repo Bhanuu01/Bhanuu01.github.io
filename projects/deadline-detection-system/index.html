@@ -98,6 +98,15 @@
             MLflow.
           </p>
 
+          <h2>Pipeline diagram</h2>
+          <figure class="mini-figure project-diagram">
+            <img src="/assets/deadline-detection-pipeline.svg" alt="Diagram showing clause input flowing through a RoBERTa relevance gate, a BERT NER stage, and a routing layer that emits structured JSON or sends low-confidence cases to review." />
+            <p class="figure-caption">
+              The useful architecture decision was splitting clause relevance from span extraction and then putting a
+              review boundary after both models instead of pretending every prediction deserved the same trust.
+            </p>
+          </figure>
+
           <h2>Evaluation context</h2>
           <p>
             The model metrics on this page are component-level results, not a claim that the full contract problem was
