@@ -175,11 +175,12 @@
               still was not enough because the compute path remained the real bottleneck.
             </p>
             <div class="entry-callout">
-              Profiled on H100, validated across 11 correctness tests, and benchmarked through the short-sequence
-              crossover where the best custom path reached 1.41x speedup at N = 128.
+              Profiled on H100 and benchmarked across a three-kernel family where the best short-sequence custom path
+              reached 1.41x speedup at N = 128, while the fused path cut peak HBM reads by 54.6%.
             </div>
             <div class="metrics-strip">
-              <span class="metric-pill">Up to 54.6% lower HBM reads</span>
+              <span class="metric-pill">54.6% peak fused-path HBM read cut</span>
+              <span class="metric-pill muted">max absolute error ≤ 1.5 × 10<sup>-7</sup></span>
               <span class="metric-pill muted">H100 evaluation</span>
             </div>
             <div class="button-row">

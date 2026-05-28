@@ -81,13 +81,28 @@
               reasoning about where HBM traffic stopped being the whole story. The best custom path ended up being
               a hybrid warp-cooperative bf16 variant rather than the most aggressively fused scalar kernel.
             </p>
-            <div class="entry-callout">11 / 11 correctness tests passed, HBM reads fell by up to 54.6%, and the best custom path reached 1.41x speedup at N = 128.</div>
+            <div class="entry-callout">Across the kernel family, the best short-sequence runtime reached 1.41x at N = 128, the fused path cut peak HBM reads by 54.6%, and the hybrid bf16 path reduced peak GPU allocation by 85–91%.</div>
+            <p class="meta-line">Validated against PyTorch references with max absolute error ≤ 1.5 × 10<sup>-7</sup>, with the strongest runtime wins at shorter sequence lengths before the scalar compute path became the next bottleneck.</p>
             <div class="tags">
-              <span class="metric-pill">1.22x–1.41x speedup</span>
+              <span class="metric-pill">1.22x–1.41x speedup at N = 64–128</span>
+              <span class="metric-pill muted">max error ≤ 1.5 × 10<sup>-7</sup></span>
               <span class="metric-pill muted">85–91% lower peak allocation</span>
             </div>
             <div class="tags">
               <span class="tag">CUDA</span><span class="tag">NSight</span><span class="tag">PyTorch</span><span class="tag">H100</span>
+            </div>
+            <div class="mini-figure project-summary-figure">
+              <p class="diagram-label">What this project proved</p>
+              <div class="flow-strip">
+                <div class="flow-node">
+                  <strong>Fusion changed memory movement</strong>
+                  <span>The fused path reached the largest measured HBM read cut, peaking at 54.6% below the baseline.</span>
+                </div>
+                <div class="flow-node">
+                  <strong>The hybrid bf16 path won first</strong>
+                  <span>The best short-sequence result came from the warp-cooperative bf16 path, not the most aggressively fused scalar kernel.</span>
+                </div>
+              </div>
             </div>
             <div class="button-row">
               <a class="button" href="/projects/fused-linear-attention/">Read case study</a>
