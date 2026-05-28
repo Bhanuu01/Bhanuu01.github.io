@@ -456,7 +456,6 @@ main {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 18px;
-  align-items: start;
 }
 
 .feature-work,
@@ -481,14 +480,15 @@ main {
 }
 
 .feature-work {
-  align-self: start;
-  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .support-work {
   padding: 18px;
   display: grid;
   gap: 14px;
+  height: 100%;
 }
 
 .work-kicker,
@@ -549,14 +549,22 @@ main {
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(232, 237, 247, 0.58), rgba(255, 255, 255, 0.68));
   border: 1px solid rgba(215, 219, 226, 0.92);
+  display: flex;
+  flex-direction: column;
 }
 
 .support-item .project-name {
   font-size: 1.03rem;
 }
 
+.feature-work .button-row {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
 .support-item .button-row {
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 14px;
 }
 
 .support-item .metric-pill,
