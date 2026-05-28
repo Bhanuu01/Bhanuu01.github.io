@@ -82,7 +82,6 @@
               a hybrid warp-cooperative bf16 variant rather than the most aggressively fused scalar kernel.
             </p>
             <div class="entry-callout">Across the kernel family, the best short-sequence runtime reached 1.41x at N = 128, the fused path cut peak HBM reads by 54.6%, and the hybrid bf16 path reduced peak GPU allocation by 85–91%.</div>
-            <p class="meta-line">Validated against PyTorch references with max absolute error ≤ 1.5 × 10<sup>-7</sup>, with the strongest runtime wins at shorter sequence lengths before the scalar compute path became the next bottleneck.</p>
             <div class="tags">
               <span class="metric-pill">1.22x–1.41x speedup at N = 64–128</span>
               <span class="metric-pill muted">max error ≤ 1.5 × 10<sup>-7</sup></span>
