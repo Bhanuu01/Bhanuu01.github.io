@@ -1064,11 +1064,30 @@ main {
   background: #fff;
 }
 
-.github-snapshot img {
-  width: 100%;
+.github-summary {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.github-summary-item {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
   border-radius: 16px;
-  border: 1px solid rgba(215, 219, 226, 0.9);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.github-summary-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.github-summary-item span {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .diagram-label {

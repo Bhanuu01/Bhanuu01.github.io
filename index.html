@@ -92,6 +92,7 @@
         <div>
           <p class="availability">Incoming Software Development Engineer Intern at Amazon</p>
           <p class="availability">Actively looking for full-time opportunities beginning in May 2027</p>
+          <p class="availability">Open to co-op and internship roles starting September 2026</p>
           <p class="eyebrow">Overview</p>
           <h1 class="hero-title">Bhanuja Karumuru</h1>
           <p class="hero-summary">
@@ -196,14 +197,13 @@
                 A gated classifier-plus-NER workflow for contract deadline extraction, built with MLflow,
                 Ray Tune, Kubernetes, structured JSON outputs, and a feedback loop for reviewable outputs.
               </p>
-              <div class="metric-pill">BERT NER F1 = 1.0 · RoBERTa F1 = 0.8682</div>
             </article>
             <article class="support-item">
               <div class="work-kicker">Backend and retrieval</div>
               <h3 class="project-name"><a href="/projects/stylesync/">StyleSync</a></h3>
               <p>
-                A two-tower recommender on the H&amp;M dataset with FAISS candidate generation, FastAPI serving, and
-                public Streamlit and Render deployments.
+                A two-tower retrieval system on the H&amp;M dataset with FAISS candidate generation, FastAPI serving,
+                and public Streamlit and Render deployments.
               </p>
               <div class="metric-pill muted">TFRS · FAISS · H&amp;M dataset · live demo</div>
             </article>
@@ -245,6 +245,14 @@
                 </p>
               </div>
               <div class="milestone-item">
+                <div class="timeline-date">May 2026</div>
+                <h3>Began a funded TREx Research Fellowship at NYU.</h3>
+                <p>
+                  Joined Prof. Debra Laefer's group for Summer 2026 to build ML and CV pipelines for historic map
+                  analysis and spatial data extraction.
+                </p>
+              </div>
+              <div class="milestone-item">
                 <div class="timeline-date">Jan 2026</div>
                 <h3>Joined ARC Robotics at NYU.</h3>
                 <p>Started work on perception and computer vision pipelines for autonomous robotics.</p>
@@ -252,6 +260,33 @@
             </div>
           </article>
         </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">From the blog</p>
+            <h2>Writing that goes deeper than the project summary.</h2>
+          </div>
+        </div>
+
+        <article class="entry-card">
+          <div class="entry-topline">
+            <div>
+              <div class="entry-kicker">CUDA · systems writing</div>
+              <h3 class="entry-title"><a href="/blog/cuda-transformer-inference-notes/">How I reduced HBM reads in transformer inference and what the profiler still said next</a></h3>
+            </div>
+            <div class="entry-date">May 2026</div>
+          </div>
+          <p>
+            A deeper write-up of the H100 fused-attention project, including the three-kernel setup, the T = 64
+            tiling decision, profiler evidence, and why the scalar fp32 path still lost on wall time.
+          </p>
+          <div class="button-row">
+            <a class="button-secondary" href="/blog/cuda-transformer-inference-notes/">Read the post</a>
+            <a class="button-secondary" href="/blog/">More writing</a>
+          </div>
+        </article>
       </section>
     </main>
 
