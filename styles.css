@@ -200,18 +200,27 @@ main {
   font-size: 1.05rem;
 }
 
+.availability-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
 .availability {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 18px;
-  padding: 7px 13px;
-  border: 1px solid #d8dfda;
+  margin: 0;
+  max-width: fit-content;
+  padding: 6px 12px;
+  border: 1px solid rgba(196, 210, 201, 0.82);
   border-radius: 999px;
-  background: var(--success-soft);
+  background: rgba(238, 245, 239, 0.72);
   color: var(--success-ink);
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 580;
 }
 
 .availability::before {
